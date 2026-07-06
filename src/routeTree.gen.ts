@@ -9,8 +9,80 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as OtpRouteImport } from './routes/otp'
+import { Route as MotherChildRouteImport } from './routes/mother-child'
+import { Route as MedicationsRouteImport } from './routes/medications'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as LibraryRouteImport } from './routes/library'
+import { Route as LanguageRouteImport } from './routes/language'
+import { Route as HomeRouteImport } from './routes/home'
+import { Route as FinderRouteImport } from './routes/finder'
+import { Route as FamilyRouteImport } from './routes/family'
+import { Route as EmergencyRouteImport } from './routes/emergency'
+import { Route as AssessmentRouteImport } from './routes/assessment'
 import { Route as IndexRouteImport } from './routes/index'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OtpRoute = OtpRouteImport.update({
+  id: '/otp',
+  path: '/otp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotherChildRoute = MotherChildRouteImport.update({
+  id: '/mother-child',
+  path: '/mother-child',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MedicationsRoute = MedicationsRouteImport.update({
+  id: '/medications',
+  path: '/medications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryRoute = LibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LanguageRoute = LanguageRouteImport.update({
+  id: '/language',
+  path: '/language',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinderRoute = FinderRouteImport.update({
+  id: '/finder',
+  path: '/finder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FamilyRoute = FamilyRouteImport.update({
+  id: '/family',
+  path: '/family',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmergencyRoute = EmergencyRouteImport.update({
+  id: '/emergency',
+  path: '/emergency',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssessmentRoute = AssessmentRouteImport.update({
+  id: '/assessment',
+  path: '/assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +91,200 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assessment': typeof AssessmentRoute
+  '/emergency': typeof EmergencyRoute
+  '/family': typeof FamilyRoute
+  '/finder': typeof FinderRoute
+  '/home': typeof HomeRoute
+  '/language': typeof LanguageRoute
+  '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/medications': typeof MedicationsRoute
+  '/mother-child': typeof MotherChildRoute
+  '/otp': typeof OtpRoute
+  '/register': typeof RegisterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assessment': typeof AssessmentRoute
+  '/emergency': typeof EmergencyRoute
+  '/family': typeof FamilyRoute
+  '/finder': typeof FinderRoute
+  '/home': typeof HomeRoute
+  '/language': typeof LanguageRoute
+  '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/medications': typeof MedicationsRoute
+  '/mother-child': typeof MotherChildRoute
+  '/otp': typeof OtpRoute
+  '/register': typeof RegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/assessment': typeof AssessmentRoute
+  '/emergency': typeof EmergencyRoute
+  '/family': typeof FamilyRoute
+  '/finder': typeof FinderRoute
+  '/home': typeof HomeRoute
+  '/language': typeof LanguageRoute
+  '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
+  '/medications': typeof MedicationsRoute
+  '/mother-child': typeof MotherChildRoute
+  '/otp': typeof OtpRoute
+  '/register': typeof RegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/assessment'
+    | '/emergency'
+    | '/family'
+    | '/finder'
+    | '/home'
+    | '/language'
+    | '/library'
+    | '/login'
+    | '/medications'
+    | '/mother-child'
+    | '/otp'
+    | '/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/assessment'
+    | '/emergency'
+    | '/family'
+    | '/finder'
+    | '/home'
+    | '/language'
+    | '/library'
+    | '/login'
+    | '/medications'
+    | '/mother-child'
+    | '/otp'
+    | '/register'
+  id:
+    | '__root__'
+    | '/'
+    | '/assessment'
+    | '/emergency'
+    | '/family'
+    | '/finder'
+    | '/home'
+    | '/language'
+    | '/library'
+    | '/login'
+    | '/medications'
+    | '/mother-child'
+    | '/otp'
+    | '/register'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssessmentRoute: typeof AssessmentRoute
+  EmergencyRoute: typeof EmergencyRoute
+  FamilyRoute: typeof FamilyRoute
+  FinderRoute: typeof FinderRoute
+  HomeRoute: typeof HomeRoute
+  LanguageRoute: typeof LanguageRoute
+  LibraryRoute: typeof LibraryRoute
+  LoginRoute: typeof LoginRoute
+  MedicationsRoute: typeof MedicationsRoute
+  MotherChildRoute: typeof MotherChildRoute
+  OtpRoute: typeof OtpRoute
+  RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/otp': {
+      id: '/otp'
+      path: '/otp'
+      fullPath: '/otp'
+      preLoaderRoute: typeof OtpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mother-child': {
+      id: '/mother-child'
+      path: '/mother-child'
+      fullPath: '/mother-child'
+      preLoaderRoute: typeof MotherChildRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/medications': {
+      id: '/medications'
+      path: '/medications'
+      fullPath: '/medications'
+      preLoaderRoute: typeof MedicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library': {
+      id: '/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/language': {
+      id: '/language'
+      path: '/language'
+      fullPath: '/language'
+      preLoaderRoute: typeof LanguageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/finder': {
+      id: '/finder'
+      path: '/finder'
+      fullPath: '/finder'
+      preLoaderRoute: typeof FinderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/family': {
+      id: '/family'
+      path: '/family'
+      fullPath: '/family'
+      preLoaderRoute: typeof FamilyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emergency': {
+      id: '/emergency'
+      path: '/emergency'
+      fullPath: '/emergency'
+      preLoaderRoute: typeof EmergencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assessment': {
+      id: '/assessment'
+      path: '/assessment'
+      fullPath: '/assessment'
+      preLoaderRoute: typeof AssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +297,18 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssessmentRoute: AssessmentRoute,
+  EmergencyRoute: EmergencyRoute,
+  FamilyRoute: FamilyRoute,
+  FinderRoute: FinderRoute,
+  HomeRoute: HomeRoute,
+  LanguageRoute: LanguageRoute,
+  LibraryRoute: LibraryRoute,
+  LoginRoute: LoginRoute,
+  MedicationsRoute: MedicationsRoute,
+  MotherChildRoute: MotherChildRoute,
+  OtpRoute: OtpRoute,
+  RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
