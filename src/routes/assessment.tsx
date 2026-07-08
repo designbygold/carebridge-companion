@@ -743,7 +743,79 @@ function ReviewStep({
   );
 }
 
-/* -------------------- Step 8: Result -------------------- */
+/* -------------------- Step 8: Analyzing transition -------------------- */
+
+function AnalyzingStep({ onDone }: { onDone: () => void }) {
+  const steps = [
+    "Understanding your symptoms",
+    "Checking for warning signs",
+    "Preparing your next best step",
+  ];
+  const [done, setDone] = useState(0);
+
+  useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    steps.forEach((_, i) => {
+      timers.push(setTimeout(() => setDone(i + 1), 700 * (i + 1)));
+    });
+    timers.push(setTimeout(onDone, 700 * steps.length + 500));
+    return () => timers.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
+      <div className="relative h-24 w-24 mb-8">
+        <span className="absolute inset-0 rounded-full bg-primary-soft animate-ping opacity-60" />
+        <span className="absolute inset-2 rounded-full bg-primary-soft" />
+        <span className="absolute inset-0 grid place-items-center">
+          <Sparkles className="h-9 w-9 text-primary" strokeWidth={2.2} />
+        </span>
+      </div>
+      <p className="text-xs font-bold uppercase tracking-widest text-primary">Lafiya Guide</p>
+      <h1 className="mt-2 text-[26px] leading-tight font-extrabold tracking-tight text-foreground">
+        Reviewing your responses
+      </h1>
+      <p className="mt-2 text-[14.5px] text-muted-foreground max-w-xs">
+        We're preparing calm, careful guidance just for you.
+      </p>
+
+      <ul className="mt-8 w-full max-w-sm space-y-3">
+        {steps.map((label, i) => {
+          const complete = i < done;
+          const active = i === done;
+          return (
+            <li
+              key={label}
+              className={`flex items-center gap-3 rounded-2xl border px-4 py-3 transition-all duration-500 ${
+                complete
+                  ? "border-primary/30 bg-primary-soft opacity-100"
+                  : active
+                    ? "border-border bg-card opacity-100"
+                    : "border-border bg-card opacity-40"
+              }`}
+            >
+              <span
+                className={`h-7 w-7 rounded-full grid place-items-center shrink-0 transition-colors ${
+                  complete ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {complete ? (
+                  <Check className="h-4 w-4" strokeWidth={3} />
+                ) : (
+                  <span className="h-2 w-2 rounded-full bg-current animate-pulse" />
+                )}
+              </span>
+              <span className="text-[14px] font-semibold text-foreground text-left">{label}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+/* -------------------- Step 9: Result / Recommendation -------------------- */
 
 type Level = "green" | "yellow" | "red";
 
@@ -765,11 +837,15 @@ function classify(a: Answers): Level {
 function ResultStep({ answers }: { answers: Answers }) {
   const level = classify(answers);
   return (
-    <>
-      <div className="mb-1">
-        <p className="text-xs font-bold uppercase tracking-widest text-primary">Your next best step</p>
-        <h1 className="text-[26px] leading-tight font-extrabold tracking-tight mt-1">
-          Here's what we recommend.
+    <div className="animate-soft-in">
+      <ResultIllustration level={level} />
+
+      <div className="mt-5">
+        <p className="text-xs font-bold uppercase tracking-widest text-primary">
+          We've prepared your next best step
+        </p>
+        <h1 className="text-[28px] leading-tight font-extrabold tracking-tight mt-1 text-foreground">
+          Your Next Best Step
         </h1>
       </div>
 
@@ -777,184 +853,494 @@ function ResultStep({ answers }: { answers: Answers }) {
       {level === "yellow" && <YellowCard />}
       {level === "red" && <RedCard />}
 
+      <WhyAccordion level={level} answers={answers} />
+
       <LearnMore level={level} concern={answers.concern} />
 
-      <div className="mt-5 grid grid-cols-2 gap-3">
-        <ActionTile icon={<Save className="h-4 w-4" />} label="Save Assessment" />
-        <ActionTile icon={<Share2 className="h-4 w-4" />} label="Share with Family" />
-        <Link
-          to="/finder"
-          className="tap-target rounded-2xl bg-card border border-border px-4 py-3 flex items-center gap-2 text-sm font-semibold text-foreground shadow-soft"
-        >
-          <Compass className="h-4 w-4 text-primary" /> Find Nearby Clinic
-        </Link>
-        <Link
-          to="/home"
-          className="tap-target rounded-2xl bg-card border border-border px-4 py-3 flex items-center gap-2 text-sm font-semibold text-foreground shadow-soft"
-        >
-          <Home className="h-4 w-4 text-primary" /> Return Home
-        </Link>
-      </div>
+      <FamilyActions />
 
-      <div className="mt-5">
+      <div className="mt-6">
         <MedicalDisclaimer />
       </div>
-    </>
+    </div>
   );
 }
 
-function ActionTile({ icon, label }: { icon: ReactNode; label: string }) {
+/* -------------------- Result illustration -------------------- */
+
+function ResultIllustration({ level }: { level: Level }) {
+  const gradient =
+    level === "red"
+      ? "from-destructive-soft via-accent-soft to-background"
+      : level === "yellow"
+        ? "from-accent-soft via-primary-soft to-background"
+        : "from-primary-soft via-secondary-soft to-background";
   return (
-    <button className="tap-target rounded-2xl bg-card border border-border px-4 py-3 flex items-center gap-2 text-sm font-semibold text-foreground shadow-soft">
-      <span className="text-primary">{icon}</span>
-      {label}
-    </button>
+    <div className={`relative rounded-[28px] overflow-hidden bg-gradient-to-br ${gradient} aspect-[16/10] shadow-soft`}>
+      <svg viewBox="0 0 400 250" className="absolute inset-0 w-full h-full" aria-hidden>
+        <defs>
+          <pattern id="tx" width="22" height="22" patternUnits="userSpaceOnUse">
+            <path d="M0 11 L11 0 L22 11 L11 22 Z" fill="none" stroke="oklch(0.66 0.14 155 / 0.15)" strokeWidth="1" />
+          </pattern>
+        </defs>
+        <rect width="400" height="250" fill="url(#tx)" />
+        {/* sun / lamp */}
+        <circle cx="320" cy="60" r="30" fill={level === "red" ? "oklch(0.62 0.2 25 / 0.55)" : "oklch(0.82 0.14 80 / 0.65)"} />
+        {/* hill */}
+        <path d="M0 190 Q 100 150 200 170 T 400 180 L400 250 L0 250 Z" fill="oklch(0.66 0.14 155 / 0.28)" />
+        {/* mother with child */}
+        <g transform="translate(120 110)">
+          <circle cx="0" cy="0" r="20" fill="oklch(0.55 0.06 40)" />
+          <path d="M-28 22 Q -28 82 0 92 Q 28 82 28 22 Z" fill="oklch(0.66 0.14 155)" />
+          <path d="M-22 -8 Q -18 -28 0 -26 Q 18 -28 22 -8 Z" fill="oklch(0.62 0.2 25)" />
+        </g>
+        <g transform="translate(170 148)">
+          <circle cx="0" cy="0" r="12" fill="oklch(0.6 0.06 40)" />
+          <path d="M-16 14 Q -16 52 0 56 Q 16 52 16 14 Z" fill="oklch(0.82 0.14 80)" />
+        </g>
+        {/* health worker */}
+        <g transform="translate(250 110)">
+          <circle cx="0" cy="0" r="20" fill="oklch(0.58 0.06 40)" />
+          <path d="M-28 22 Q -28 82 0 92 Q 28 82 28 22 Z" fill="oklch(0.7 0.11 235)" />
+          <rect x="-5" y="36" width="10" height="3.5" fill="white" />
+          <rect x="-1.75" y="32.75" width="3.5" height="10" fill="white" />
+        </g>
+      </svg>
+      <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/10 to-transparent" />
+    </div>
   );
 }
+
+/* -------------------- Green (home care) -------------------- */
 
 function GreenCard() {
   return (
-    <div className="mt-4 rounded-[28px] p-6 bg-gradient-to-br from-primary to-[#158a5c] shadow-lift text-primary-foreground animate-slide-up">
-      <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-white/20 rounded-full px-3 py-1">
-        <ShieldCheck className="h-3.5 w-3.5" /> Green
+    <div className="mt-4 rounded-[28px] p-6 bg-card border-2 border-primary/25 shadow-lift animate-slide-up">
+      <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-primary-soft text-primary rounded-full px-3 py-1">
+        <ShieldCheck className="h-3.5 w-3.5" /> Recommendation
       </div>
-      <h2 className="mt-3 text-2xl font-extrabold">Continue Home Care</h2>
-      <p className="mt-2 text-white/90 text-[14.5px] leading-relaxed">
-        Home care may be appropriate. Watch how they feel over the next day and follow the simple
-        steps below.
+      <h2 className="mt-3 text-[22px] font-extrabold text-foreground leading-tight">
+        Home Care May Be Appropriate
+      </h2>
+      <p className="mt-2 text-muted-foreground text-[14.5px] leading-relaxed">
+        Based on what you've shared, your symptoms do not currently suggest an immediate emergency.
+        Continue to monitor symptoms carefully.
       </p>
+
       <ul className="mt-4 space-y-2.5">
-        <TipRow>Encourage clean water and small frequent sips</TipRow>
-        <TipRow>Ensure rest and light nutritious meals</TipRow>
-        <TipRow>Monitor symptoms — return if they worsen</TipRow>
+        <TipRow tone="green">Drink enough clean water</TipRow>
+        <TipRow tone="green">Rest and eat light, nutritious meals</TipRow>
+        <TipRow tone="green">Continue monitoring symptoms</TipRow>
+        <TipRow tone="green">Return if symptoms worsen</TipRow>
       </ul>
+
+      <div className="mt-5 grid grid-cols-1 gap-2.5">
+        <Link
+          to="/library"
+          className="tap-target rounded-2xl bg-primary text-primary-foreground font-bold text-[15px] flex items-center justify-center gap-2 py-3.5 shadow-lift active:scale-[0.98] transition"
+        >
+          <BookOpen className="h-4 w-4" /> Read Health Advice
+        </Link>
+        <div className="grid grid-cols-2 gap-2.5">
+          <Link
+            to="/finder"
+            className="tap-target rounded-2xl bg-card border border-border font-semibold text-sm flex items-center justify-center gap-1.5 py-3 text-foreground"
+          >
+            <Pill className="h-4 w-4 text-primary" /> Nearby Pharmacy
+          </Link>
+          <button className="tap-target rounded-2xl bg-card border border-border font-semibold text-sm flex items-center justify-center gap-1.5 py-3 text-foreground">
+            <Save className="h-4 w-4 text-primary" /> Save
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
+
+/* -------------------- Yellow (visit clinic soon) -------------------- */
+
+const NEARBY_FACILITIES = [
+  {
+    name: "Maiduguri Primary Health Centre",
+    distance: "1.2 km",
+    open: true,
+    hours: "Open until 6:00 PM",
+    phone: "+234 803 000 0001",
+    eta: "6 min drive",
+  },
+  {
+    name: "Shehu Sanda Kyarimi Clinic",
+    distance: "2.8 km",
+    open: true,
+    hours: "Open 24 hours",
+    phone: "+234 803 000 0002",
+    eta: "12 min drive",
+  },
+];
 
 function YellowCard() {
   return (
-    <div className="mt-4 rounded-[28px] p-6 bg-gradient-to-br from-accent to-[#c07f14] shadow-lift text-accent-foreground animate-slide-up">
-      <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-white/40 rounded-full px-3 py-1">
-        <Stethoscope className="h-3.5 w-3.5" /> Yellow
+    <div className="mt-4 rounded-[28px] p-6 bg-card border-2 border-accent/40 shadow-lift animate-slide-up">
+      <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-accent-soft text-accent-foreground rounded-full px-3 py-1">
+        <Stethoscope className="h-3.5 w-3.5" /> Recommendation
       </div>
-      <h2 className="mt-3 text-2xl font-extrabold">Visit a Clinic Soon</h2>
-      <p className="mt-2 text-black/70 text-[14.5px] leading-relaxed">
-        Symptoms should be checked by a healthcare professional within the next 24 hours.
+      <h2 className="mt-3 text-[22px] font-extrabold text-foreground leading-tight">
+        Visit a Healthcare Facility Soon
+      </h2>
+      <p className="mt-2 text-muted-foreground text-[14.5px] leading-relaxed">
+        Your symptoms should be assessed by a qualified healthcare professional within the next 24
+        hours.
       </p>
 
-      <div className="mt-4 rounded-2xl bg-white/90 text-foreground p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="font-bold text-[15px]">Maiduguri Primary Health Centre</p>
-            <p className="text-xs text-muted-foreground mt-0.5">1.2 km away · Open now until 6:00 PM</p>
-          </div>
-          <span className="text-[11px] font-bold text-primary bg-primary-soft rounded-full px-2 py-1">
-            Open
-          </span>
+      <p className="mt-5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+        Nearest facilities
+      </p>
+      <div className="mt-2 space-y-3">
+        {NEARBY_FACILITIES.map((f) => (
+          <FacilityCard key={f.name} f={f} />
+        ))}
+      </div>
+
+      <Link
+        to="/finder"
+        className="mt-4 tap-target rounded-2xl bg-primary text-primary-foreground font-bold text-[15px] flex items-center justify-center gap-2 py-3.5 shadow-lift active:scale-[0.98] transition"
+      >
+        <MapPin className="h-4 w-4" /> View on Map
+      </Link>
+    </div>
+  );
+}
+
+function FacilityCard({ f }: { f: (typeof NEARBY_FACILITIES)[number] }) {
+  return (
+    <div className="rounded-2xl border border-border bg-background/60 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="font-bold text-[15px] text-foreground leading-snug">{f.name}</p>
+          <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
+            <MapPin className="h-3 w-3" /> {f.distance} · {f.eta}
+          </p>
+          <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
+            <Clock className="h-3 w-3" /> {f.hours}
+          </p>
         </div>
-        <div className="mt-3 grid grid-cols-2 gap-2">
-          <button className="tap-target rounded-xl bg-primary text-primary-foreground text-sm font-bold py-2.5 flex items-center justify-center gap-1.5">
-            <Navigation className="h-4 w-4" /> Directions
-          </button>
-          <button className="tap-target rounded-xl bg-muted text-foreground text-sm font-bold py-2.5 flex items-center justify-center gap-1.5">
-            <Phone className="h-4 w-4" /> Call clinic
-          </button>
-        </div>
+        <span
+          className={`text-[11px] font-bold rounded-full px-2 py-1 shrink-0 ${
+            f.open ? "bg-primary-soft text-primary" : "bg-muted text-muted-foreground"
+          }`}
+        >
+          {f.open ? "Open" : "Closed"}
+        </span>
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <button className="tap-target rounded-xl bg-primary text-primary-foreground text-sm font-bold py-2.5 flex items-center justify-center gap-1.5">
+          <Navigation className="h-4 w-4" /> Directions
+        </button>
+        <a
+          href={`tel:${f.phone}`}
+          className="tap-target rounded-xl bg-muted text-foreground text-sm font-bold py-2.5 flex items-center justify-center gap-1.5"
+        >
+          <Phone className="h-4 w-4" /> Call
+        </a>
       </div>
     </div>
   );
 }
+
+/* -------------------- Red (immediate) -------------------- */
 
 function RedCard() {
   return (
     <div className="mt-4 rounded-[28px] p-6 bg-gradient-to-br from-destructive to-[#a5321f] shadow-lift text-destructive-foreground animate-slide-up">
       <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-white/25 rounded-full px-3 py-1">
-        <AlertTriangle className="h-3.5 w-3.5" /> Red · Urgent
+        <Siren className="h-3.5 w-3.5" /> Urgent
       </div>
-      <h2 className="mt-3 text-2xl font-extrabold">Seek Immediate Care</h2>
+      <h2 className="mt-3 text-[22px] font-extrabold leading-tight">
+        Seek Immediate Medical Attention
+      </h2>
       <p className="mt-2 text-white/90 text-[14.5px] leading-relaxed">
-        The signs you described need urgent attention. Please act now — do not wait.
+        Some of the symptoms you reported may require urgent medical assessment. Please act now — do
+        not wait.
       </p>
 
-      <Link
-        to="/emergency"
-        className="mt-4 tap-target w-full rounded-2xl bg-white text-destructive font-extrabold text-base flex items-center justify-center gap-2 py-3.5 shadow-lift"
+      <a
+        href="tel:112"
+        className="mt-5 tap-target w-full rounded-2xl bg-white text-destructive font-extrabold text-lg flex items-center justify-center gap-2 py-4 shadow-lift active:scale-[0.98] transition"
       >
-        <Phone className="h-5 w-5" /> Open Emergency Hub
-      </Link>
+        <Phone className="h-5 w-5" /> Emergency Call · 112
+      </a>
 
-      <div className="mt-3 rounded-2xl bg-white/15 backdrop-blur p-4">
+      <div className="mt-3 grid grid-cols-2 gap-2.5">
+        <EmergencyAction icon={<Ambulance className="h-5 w-5" />} label="Nearest Hospital" to="/finder" />
+        <EmergencyAction icon={<MapPin className="h-5 w-5" />} label="Share Location" />
+        <EmergencyAction icon={<Users className="h-5 w-5" />} label="Notify Contact" to="/emergency" />
+        <EmergencyAction icon={<BookOpen className="h-5 w-5" />} label="Instructions" to="/emergency" />
+      </div>
+
+      <div className="mt-4 rounded-2xl bg-white/15 backdrop-blur p-4">
         <p className="text-[11px] font-bold uppercase tracking-widest text-white/80">
           Nearest emergency facility
         </p>
         <p className="mt-1 font-bold text-white">UMTH Emergency Unit</p>
-        <p className="text-xs text-white/85">3.4 km · 24 hours</p>
-        <div className="mt-3 grid grid-cols-2 gap-2">
-          <button className="tap-target rounded-xl bg-white/20 text-white text-sm font-bold py-2.5 flex items-center justify-center gap-1.5">
-            <Navigation className="h-4 w-4" /> Share location
-          </button>
-          <button className="tap-target rounded-xl bg-white/20 text-white text-sm font-bold py-2.5 flex items-center justify-center gap-1.5">
-            <Phone className="h-4 w-4" /> Call contact
-          </button>
-        </div>
+        <p className="text-xs text-white/85">3.4 km · Open 24 hours</p>
       </div>
     </div>
   );
 }
 
-function TipRow({ children }: { children: ReactNode }) {
+function EmergencyAction({
+  icon,
+  label,
+  to,
+}: {
+  icon: ReactNode;
+  label: string;
+  to?: string;
+}) {
+  const cls =
+    "tap-target rounded-2xl bg-white/15 hover:bg-white/25 backdrop-blur px-3 py-3 flex flex-col items-start gap-1.5 text-white font-bold text-[13px] leading-tight text-left transition";
+  if (to) {
+    return (
+      <Link to={to} className={cls}>
+        {icon}
+        {label}
+      </Link>
+    );
+  }
+  return (
+    <button className={cls}>
+      {icon}
+      {label}
+    </button>
+  );
+}
+
+/* -------------------- Shared bits -------------------- */
+
+function TipRow({ children, tone = "green" }: { children: ReactNode; tone?: "green" | "white" }) {
+  const isGreen = tone === "green";
   return (
     <li className="flex items-start gap-2.5">
-      <span className="h-5 w-5 rounded-full bg-white/25 grid place-items-center shrink-0 mt-0.5">
-        <Check className="h-3 w-3 text-white" strokeWidth={3} />
+      <span
+        className={`h-5 w-5 rounded-full grid place-items-center shrink-0 mt-0.5 ${
+          isGreen ? "bg-primary-soft" : "bg-white/25"
+        }`}
+      >
+        <Check className={`h-3 w-3 ${isGreen ? "text-primary" : "text-white"}`} strokeWidth={3} />
       </span>
-      <span className="text-[14px] text-white/95">{children}</span>
+      <span className={`text-[14px] ${isGreen ? "text-foreground" : "text-white/95"}`}>{children}</span>
     </li>
   );
 }
 
-function LearnMore({ level, concern }: { level: Level; concern?: string }) {
-  const topic = concern ?? "your symptoms";
-  const items =
-    level === "red"
-      ? [
-          `Warning signs to watch for with ${topic}`,
-          "How to prepare for an emergency visit",
-          "When to call for immediate help",
-        ]
-      : level === "yellow"
-        ? [
-            `Understanding ${topic}: what a clinic visit looks like`,
-            "Questions to ask your health worker",
-            "Preventive care for the whole family",
-          ]
-        : [
-            `Home care basics for ${topic}`,
-            "Hydration and nutrition tips",
-            "When to seek additional care",
-          ];
+/* -------------------- Why this recommendation -------------------- */
+
+function buildWhyReasons(a: Answers, level: Level): string[] {
+  const reasons: string[] = [];
+  if (a.dangers.length > 0) {
+    reasons.push(`You reported ${a.dangers.length === 1 ? "a warning sign" : "warning signs"}: ${a.dangers.join(", ")}.`);
+  }
+  if (a.severity === "emergency" || a.severity === "severe") {
+    reasons.push(`You described the symptoms as ${labelForSeverity(a.severity).toLowerCase()}.`);
+  } else if (a.severity === "moderate") {
+    reasons.push("You described the symptoms as moderate and uncomfortable.");
+  }
+  if (a.duration === "week+") {
+    reasons.push("The symptoms have been going on for more than a week.");
+  } else if (a.duration === "3-7") {
+    reasons.push("The symptoms have been ongoing for several days.");
+  }
+  if (a.age === "infant") {
+    reasons.push("The person affected is under 1 year old, so we take extra care.");
+  }
+  if (a.concern) {
+    reasons.push(`The main concern you shared is ${a.concern.toLowerCase()}.`);
+  }
+  if (reasons.length === 0) {
+    reasons.push(
+      level === "green"
+        ? "No danger signs were reported and the symptoms sound mild."
+        : "Your answers suggest it is safer to seek professional guidance."
+    );
+  }
+  return reasons;
+}
+
+function WhyAccordion({ level, answers }: { level: Level; answers: Answers }) {
+  const [open, setOpen] = useState(false);
+  const reasons = buildWhyReasons(answers, level);
   return (
-    <div className="mt-5 card-elevated p-4">
-      <div className="flex items-center gap-2">
-        <span className="h-8 w-8 rounded-xl bg-primary-soft grid place-items-center">
-          <BookOpen className="h-4 w-4 text-primary" />
+    <div className="mt-5 card-elevated overflow-hidden">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="w-full tap-target px-4 py-4 flex items-center gap-3 text-left"
+        aria-expanded={open}
+      >
+        <span className="h-9 w-9 rounded-xl bg-secondary-soft grid place-items-center shrink-0">
+          <HeartPulse className="h-4 w-4 text-secondary" />
         </span>
-        <p className="font-bold text-foreground">Learn more</p>
-      </div>
-      <ul className="mt-3 divide-y divide-border">
-        {items.map((t) => (
-          <li key={t}>
-            <Link
-              to="/library"
-              className="flex items-center gap-3 py-3 text-sm font-semibold text-foreground"
-            >
-              <span className="flex-1">{t}</span>
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            </Link>
-          </li>
-        ))}
-      </ul>
+        <span className="flex-1 font-bold text-foreground text-[15px]">
+          Why did I receive this recommendation?
+        </span>
+        <ChevronDown
+          className={`h-5 w-5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div className="px-4 pb-4 -mt-1 animate-soft-in">
+          <ul className="space-y-2.5 border-t border-border pt-4">
+            {reasons.map((r) => (
+              <li key={r} className="flex items-start gap-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                <span className="text-[14px] text-foreground leading-relaxed">{r}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+            This is guidance, not a diagnosis. A qualified health worker can give you a full
+            assessment.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
+
+/* -------------------- Learn more articles -------------------- */
+
+type Article = { title: string; category: string; read: string; emoji: string; tint: string };
+
+const ARTICLE_LIBRARY: Record<string, Article> = {
+  fever: {
+    title: "Managing Fever at Home",
+    category: "Fever care",
+    read: "4 min read",
+    emoji: "🌡️",
+    tint: "bg-destructive-soft",
+  },
+  malaria: {
+    title: "Preventing Malaria This Season",
+    category: "Prevention",
+    read: "5 min read",
+    emoji: "🦟",
+    tint: "bg-primary-soft",
+  },
+  water: {
+    title: "Safe Drinking Water at Home",
+    category: "Water & sanitation",
+    read: "3 min read",
+    emoji: "💧",
+    tint: "bg-secondary-soft",
+  },
+  dehydration: {
+    title: "Recognising Dehydration Early",
+    category: "Warning signs",
+    read: "4 min read",
+    emoji: "🥤",
+    tint: "bg-accent-soft",
+  },
+  breathing: {
+    title: "When Breathing Feels Difficult",
+    category: "Emergency care",
+    read: "3 min read",
+    emoji: "🫁",
+    tint: "bg-destructive-soft",
+  },
+  pregnancy: {
+    title: "Safe Pregnancy Checkpoints",
+    category: "Mother & child",
+    read: "6 min read",
+    emoji: "🤰",
+    tint: "bg-accent-soft",
+  },
+};
+
+function pickArticles(concern?: string): Article[] {
+  const lib = ARTICLE_LIBRARY;
+  const c = concern?.toLowerCase() ?? "";
+  if (c.includes("fever")) return [lib.fever, lib.malaria, lib.dehydration, lib.water];
+  if (c.includes("breath")) return [lib.breathing, lib.fever, lib.malaria, lib.water];
+  if (c.includes("diarr") || c.includes("vomit")) return [lib.dehydration, lib.water, lib.fever, lib.malaria];
+  if (c.includes("pregnan")) return [lib.pregnancy, lib.water, lib.dehydration, lib.fever];
+  return [lib.fever, lib.water, lib.malaria, lib.dehydration];
+}
+
+function LearnMore({ level: _level, concern }: { level: Level; concern?: string }) {
+  const articles = pickArticles(concern);
+  return (
+    <div className="mt-6">
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+            Learn more
+          </p>
+          <h3 className="font-bold text-foreground text-[17px] mt-0.5">Articles for your family</h3>
+        </div>
+        <Link to="/library" className="text-xs font-bold text-primary">
+          See all
+        </Link>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        {articles.map((a) => (
+          <Link
+            key={a.title}
+            to="/library"
+            className="card-elevated p-3 flex flex-col gap-3 active:scale-[0.98] transition"
+          >
+            <div
+              className={`h-20 rounded-2xl grid place-items-center text-4xl ${a.tint}`}
+              aria-hidden
+            >
+              {a.emoji}
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary">
+                {a.category}
+              </p>
+              <p className="mt-1 font-bold text-foreground text-[13.5px] leading-tight line-clamp-2">
+                {a.title}
+              </p>
+              <p className="mt-1.5 text-[11px] text-muted-foreground flex items-center gap-1">
+                <Clock className="h-3 w-3" /> {a.read}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* -------------------- Family actions -------------------- */
+
+function FamilyActions() {
+  return (
+    <div className="mt-6">
+      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">
+        Care with your family
+      </p>
+      <div className="grid grid-cols-2 gap-3">
+        <FamilyTile icon={<Share2 className="h-5 w-5" />} label="Share with Family" />
+        <FamilyTile icon={<Wallet className="h-5 w-5" />} label="Save to Health Wallet" />
+        <FamilyTile icon={<Bell className="h-5 w-5" />} label="Medication Reminder" to="/medications" />
+        <FamilyTile icon={<CalendarClock className="h-5 w-5" />} label="Follow-up Reminder" />
+      </div>
+    </div>
+  );
+}
+
+function FamilyTile({ icon, label, to }: { icon: ReactNode; label: string; to?: string }) {
+  const inner = (
+    <>
+      <span className="h-10 w-10 rounded-2xl bg-primary-soft text-primary grid place-items-center">
+        {icon}
+      </span>
+      <span className="font-bold text-[13.5px] text-foreground leading-tight">{label}</span>
+    </>
+  );
+  const cls =
+    "card-elevated p-4 flex flex-col gap-3 text-left active:scale-[0.98] transition tap-target";
+  if (to) return <Link to={to} className={cls}>{inner}</Link>;
+  return <button className={cls}>{inner}</button>;
+}
+
