@@ -175,7 +175,8 @@ function AssessmentPage() {
             />
           )}
           {step === 7 && <ReviewStep answers={answers} onConfirm={next} onEdit={jumpTo} />}
-          {step === 8 && <ResultStep answers={answers} />}
+          {step === 8 && <AnalyzingStep onDone={next} />}
+          {step === 9 && <ResultStep answers={answers} />}
         </main>
       </div>
     </div>
