@@ -12,11 +12,12 @@ type Slot = "morning" | "afternoon" | "evening" | "night";
 type Med = { id: string; name: string; dose: string; who: string; time: string; slot: Slot; done?: boolean };
 
 const initialMeds: Med[] = [
-  { id: "1", name: "Paracetamol", dose: "500mg • 1 tablet", who: "Fatima", time: "8:00 AM", slot: "morning" },
-  { id: "2", name: "Iron supplement", dose: "60mg • 1 capsule", who: "You", time: "8:30 AM", slot: "morning", done: true },
-  { id: "3", name: "ORS solution", dose: "1 sachet in water", who: "Fatima", time: "1:00 PM", slot: "afternoon" },
-  { id: "4", name: "Amoxicillin", dose: "250mg • 1 tablet", who: "Fatima", time: "6:00 PM", slot: "evening" },
-  { id: "5", name: "Vitamin D", dose: "1 drop", who: "Musa", time: "9:00 PM", slot: "night" },
+  { id: "1", name: "Paracetamol", dose: "500 mg • 1 tablet", who: "Fatima", time: "8:00 AM", slot: "morning", done: true },
+  { id: "2", name: "Iron supplement", dose: "60 mg • pregnancy support", who: "Aisha", time: "8:30 AM", slot: "morning" },
+  { id: "3", name: "Vitamin A", dose: "Scheduled tomorrow", who: "Fatima", time: "Tomorrow", slot: "morning" },
+  { id: "4", name: "Amoxicillin", dose: "250 mg • every 8 hours", who: "Musa", time: "2:00 PM", slot: "afternoon" },
+  { id: "5", name: "Amoxicillin", dose: "250 mg • every 8 hours", who: "Musa", time: "10:00 PM", slot: "night" },
+  { id: "6", name: "Amlodipine", dose: "5 mg • hypertension", who: "Ibrahim", time: "8:00 PM", slot: "evening" },
 ];
 
 const slotConfig: Record<Slot, { label: string; icon: React.ReactNode; tone: string }> = {

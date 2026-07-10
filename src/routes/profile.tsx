@@ -71,8 +71,9 @@ function ProfilePage() {
             <div className="min-w-0 flex-1">
               <h2 className="text-lg font-bold text-foreground truncate">Aisha Ibrahim</h2>
               <p className="text-sm text-muted-foreground flex items-center gap-1 mt-0.5">
-                <MapPin className="h-3.5 w-3.5" /> Maiduguri, Borno State
+                <MapPin className="h-3.5 w-3.5" /> Bolori, Maiduguri • Borno State
               </p>
+              <p className="text-xs text-muted-foreground mt-0.5">Age 31 • Tailor • English & Hausa</p>
               <span className="inline-flex items-center gap-1 mt-2 text-[11px] font-semibold text-primary bg-primary-soft px-2 py-1 rounded-full">
                 <BadgeCheck className="h-3 w-3" /> Verified Account
               </span>

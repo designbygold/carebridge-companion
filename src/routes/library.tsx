@@ -18,12 +18,14 @@ const categories = [
 ];
 
 const articles = [
-  { id: "1", cat: "Malaria", title: "How to protect your family from malaria this rainy season", read: "4 min", featured: true },
-  { id: "2", cat: "Cholera", title: "Safe drinking water: boil, treat, and store", read: "3 min" },
-  { id: "3", cat: "Pregnancy", title: "Eating well during your second trimester", read: "5 min" },
-  { id: "4", cat: "Nutrition", title: "Feeding a picky toddler — gentle strategies", read: "6 min" },
-  { id: "5", cat: "First aid", title: "What to do when a child has a fever", read: "4 min" },
-  { id: "6", cat: "Mental health", title: "Coping with worry as a caregiver", read: "5 min" },
+  { id: "1", cat: "Malaria", title: "Preventing malaria during the rainy season", read: "4 min", featured: true },
+  { id: "2", cat: "First aid", title: "Recognising dehydration in children", read: "3 min" },
+  { id: "3", cat: "Water safety", title: "Safe drinking water: boil, treat, store", read: "3 min" },
+  { id: "4", cat: "First aid", title: "Managing childhood fever at home", read: "4 min" },
+  { id: "5", cat: "Pregnancy", title: "Nutrition during pregnancy — a Maiduguri kitchen guide", read: "5 min" },
+  { id: "6", cat: "Pregnancy", title: "Breastfeeding tips for the first six months", read: "5 min" },
+  { id: "7", cat: "Nutrition", title: "Heat safety: keeping your family cool and hydrated", read: "4 min" },
+  { id: "8", cat: "Mental health", title: "Mental wellbeing for busy caregivers", read: "6 min" },
 ];
 
 function LibraryPage() {
