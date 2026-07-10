@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as OtpRouteImport } from './routes/otp'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MotherChildRouteImport } from './routes/mother-child'
 import { Route as MedicationsRouteImport } from './routes/medications'
 import { Route as LoginRouteImport } from './routes/login'
@@ -37,6 +38,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const OtpRoute = OtpRouteImport.update({
   id: '/otp',
   path: '/otp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MotherChildRoute = MotherChildRouteImport.update({
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/medications': typeof MedicationsRoute
   '/mother-child': typeof MotherChildRoute
+  '/onboarding': typeof OnboardingRoute
   '/otp': typeof OtpRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/medications': typeof MedicationsRoute
   '/mother-child': typeof MotherChildRoute
+  '/onboarding': typeof OnboardingRoute
   '/otp': typeof OtpRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/medications': typeof MedicationsRoute
   '/mother-child': typeof MotherChildRoute
+  '/onboarding': typeof OnboardingRoute
   '/otp': typeof OtpRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/medications'
     | '/mother-child'
+    | '/onboarding'
     | '/otp'
     | '/profile'
     | '/register'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/medications'
     | '/mother-child'
+    | '/onboarding'
     | '/otp'
     | '/profile'
     | '/register'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/medications'
     | '/mother-child'
+    | '/onboarding'
     | '/otp'
     | '/profile'
     | '/register'
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MedicationsRoute: typeof MedicationsRoute
   MotherChildRoute: typeof MotherChildRoute
+  OnboardingRoute: typeof OnboardingRoute
   OtpRoute: typeof OtpRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
@@ -233,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: '/otp'
       fullPath: '/otp'
       preLoaderRoute: typeof OtpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mother-child': {
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MedicationsRoute: MedicationsRoute,
   MotherChildRoute: MotherChildRoute,
+  OnboardingRoute: OnboardingRoute,
   OtpRoute: OtpRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,

@@ -30,7 +30,7 @@ function Splash() {
 
         <div className="space-y-3 mt-8">
           <Link
-            to="/language"
+            to="/onboarding"
             className="tap-target flex items-center justify-center rounded-2xl bg-primary px-6 text-base font-semibold text-primary-foreground shadow-lift"
           >
             Get started
