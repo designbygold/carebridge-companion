@@ -201,10 +201,10 @@ function HomePage() {
           </div>
         </div>
         <div className="flex gap-3 overflow-x-auto px-5 pb-2 snap-x snap-mandatory">
-          <FamilyCard name="Ibrahim" role="Husband" age={36} initials="IB" status="healthy" />
-          <FamilyCard name="Fatima" role="Daughter" age={5} initials="FA" status="attention" />
-          <FamilyCard name="Musa" role="Son" age={2} initials="MU" status="reminder" />
-          <FamilyCard name="Aisha" role="You" age={32} initials="AI" status="healthy" />
+          <FamilyCard name="Ibrahim" role="Husband" age={36} initials="IB" status="reminder" />
+          <FamilyCard name="Fatima" role="Daughter" age={6} initials="FA" status="reminder" />
+          <FamilyCard name="Musa" role="Son" age={10} initials="MU" status="healthy" />
+          <FamilyCard name="Aisha" role="You" age={31} initials="AI" status="healthy" />
           <AddFamilyCard />
         </div>
       </section>
@@ -243,27 +243,33 @@ function HomePage() {
         <div className="flex gap-3 overflow-x-auto px-5 pb-2 snap-x">
           <AlertCard
             title="Malaria prevention week"
-            body="Free nets at Bulumkutu PHC this Saturday"
+            body="Free treated nets at Bolori PHC this Saturday"
             icon={<Shield className="h-5 w-5" />}
             tone="primary"
           />
           <AlertCard
-            title="Cholera awareness"
-            body="Wash hands & boil water — cases rising"
-            icon={<Droplets className="h-5 w-5" />}
-            tone="secondary"
-          />
-          <AlertCard
-            title="Vaccination campaign"
-            body="Measles booster clinic runs Aug 10–14"
+            title="Free immunisation campaign"
+            body="Polio & measles boosters — Aug 10–14 across Maiduguri PHCs"
             icon={<Syringe className="h-5 w-5" />}
             tone="accent"
           />
           <AlertCard
-            title="Heat safety tips"
-            body="Stay hydrated. Check on elders daily."
+            title="Maternal health outreach"
+            body="Free antenatal check-ups at Gwange PHC this Thursday"
+            icon={<HeartHandshake className="h-5 w-5" />}
+            tone="secondary"
+          />
+          <AlertCard
+            title="Heat wave advisory"
+            body="42°C expected today. Hydrate and check on elders."
             icon={<Sun className="h-5 w-5" />}
             tone="warm"
+          />
+          <AlertCard
+            title="Safe water awareness"
+            body="Boil drinking water 3 mins — rainy season begins"
+            icon={<Droplets className="h-5 w-5" />}
+            tone="secondary"
           />
         </div>
       </section>
