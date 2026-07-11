@@ -17,10 +17,14 @@ interface MobileShellProps {
 }
 
 export function MobileShell({ children, hideNav, className }: MobileShellProps) {
+  const { pathname } = useLocation();
   return (
     <div className="min-h-dvh bg-background">
       <div className="mx-auto max-w-[480px] min-h-dvh bg-background flex flex-col relative">
-        <main className={`flex-1 flex flex-col ${hideNav ? "" : "pb-24"} ${className ?? ""}`}>
+        <main
+          key={pathname}
+          className={`flex-1 flex flex-col animate-page-enter ${hideNav ? "" : "pb-24"} ${className ?? ""}`}
+        >
           {children}
         </main>
         {!hideNav && <BottomNav />}
@@ -34,7 +38,7 @@ function BottomNav() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] safe-bottom pt-2 px-3 bg-card/95 backdrop-blur-lg border-t border-border z-40"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] safe-bottom pt-2 px-3 bg-card/90 backdrop-blur-xl border-t border-border/70 z-40 shadow-[0_-8px_24px_-12px_rgba(15,23,42,0.08)]"
     >
       <ul className="grid grid-cols-5 gap-1">
         {navItems.map(({ to, label, icon: Icon }) => {
@@ -43,15 +47,26 @@ function BottomNav() {
             <li key={to}>
               <Link
                 to={to}
-                className={`flex flex-col items-center gap-1 py-2 rounded-2xl tap-target transition-colors ${
+                aria-label={label}
+                className={`relative flex flex-col items-center gap-1 py-2 rounded-2xl tap-target transition-colors duration-300 ${
                   active ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 }`}
                 aria-current={active ? "page" : undefined}
               >
-                <span className={`grid place-items-center h-8 w-8 rounded-xl transition-colors ${active ? "bg-primary-soft" : ""}`}>
-                  <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 2} />
+                <span
+                  className={`grid place-items-center h-9 w-9 rounded-xl transition-all duration-300 ${
+                    active ? "bg-primary-soft scale-105" : "scale-100"
+                  }`}
+                >
+                  <Icon className="h-5 w-5 transition-transform duration-300" strokeWidth={active ? 2.5 : 2} />
                 </span>
-                <span className="text-[11px] font-semibold">{label}</span>
+                <span className="text-[11px] font-semibold tracking-tight">{label}</span>
+                <span
+                  aria-hidden
+                  className={`absolute -top-0.5 h-1 w-6 rounded-full bg-primary transition-all duration-500 ${
+                    active ? "opacity-100 scale-100" : "opacity-0 scale-50"
+                  }`}
+                />
               </Link>
             </li>
           );
