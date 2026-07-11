@@ -17,10 +17,14 @@ interface MobileShellProps {
 }
 
 export function MobileShell({ children, hideNav, className }: MobileShellProps) {
+  const { pathname } = useLocation();
   return (
     <div className="min-h-dvh bg-background">
       <div className="mx-auto max-w-[480px] min-h-dvh bg-background flex flex-col relative">
-        <main className={`flex-1 flex flex-col ${hideNav ? "" : "pb-24"} ${className ?? ""}`}>
+        <main
+          key={pathname}
+          className={`flex-1 flex flex-col animate-page-enter ${hideNav ? "" : "pb-24"} ${className ?? ""}`}
+        >
           {children}
         </main>
         {!hideNav && <BottomNav />}
