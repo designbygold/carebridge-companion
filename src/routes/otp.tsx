@@ -2,6 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 
 export const Route = createFileRoute("/otp")({
+  head: () => ({
+    meta: [
+      { title: "Verify your phone | CareBridge" },
+      { name: "description", content: "Confirm your phone number to continue to CareBridge." },
+      { property: "og:title", content: "Verify your phone | CareBridge" },
+      { property: "og:description", content: "Confirm your phone number to continue to CareBridge." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: OtpPage,
 });
 

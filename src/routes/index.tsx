@@ -2,6 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeartPulse, ShieldCheck, Users } from "lucide-react";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "CareBridge | Trusted health guidance for every family" },
+      { name: "description", content: "Meet CareBridge, a calm health companion for family guidance, care reminders and nearby services." },
+      { property: "og:title", content: "CareBridge | Trusted health guidance for every family" },
+      { property: "og:description", content: "Meet CareBridge, a calm health companion for family guidance, care reminders and nearby services." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: Splash,
 });
 

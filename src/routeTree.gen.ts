@@ -18,6 +18,7 @@ import { Route as MedicationsRouteImport } from './routes/medications'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as LanguageRouteImport } from './routes/language'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as FinderRouteImport } from './routes/finder'
 import { Route as FamilyRouteImport } from './routes/family'
 import { Route as EmergencyRouteImport } from './routes/emergency'
@@ -69,6 +70,11 @@ const LanguageRoute = LanguageRouteImport.update({
   path: '/language',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FinderRoute = FinderRouteImport.update({
   id: '/finder',
   path: '/finder',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/emergency': typeof EmergencyRoute
   '/family': typeof FamilyRoute
   '/finder': typeof FinderRoute
+  '/home': typeof HomeRoute
   '/language': typeof LanguageRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/emergency': typeof EmergencyRoute
   '/family': typeof FamilyRoute
   '/finder': typeof FinderRoute
+  '/home': typeof HomeRoute
   '/language': typeof LanguageRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
@@ -134,6 +142,7 @@ export interface FileRoutesById {
   '/emergency': typeof EmergencyRoute
   '/family': typeof FamilyRoute
   '/finder': typeof FinderRoute
+  '/home': typeof HomeRoute
   '/language': typeof LanguageRoute
   '/library': typeof LibraryRoute
   '/login': typeof LoginRoute
@@ -152,6 +161,7 @@ export interface FileRouteTypes {
     | '/emergency'
     | '/family'
     | '/finder'
+    | '/home'
     | '/language'
     | '/library'
     | '/login'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/emergency'
     | '/family'
     | '/finder'
+    | '/home'
     | '/language'
     | '/library'
     | '/login'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/emergency'
     | '/family'
     | '/finder'
+    | '/home'
     | '/language'
     | '/library'
     | '/login'
@@ -201,6 +213,7 @@ export interface RootRouteChildren {
   EmergencyRoute: typeof EmergencyRoute
   FamilyRoute: typeof FamilyRoute
   FinderRoute: typeof FinderRoute
+  HomeRoute: typeof HomeRoute
   LanguageRoute: typeof LanguageRoute
   LibraryRoute: typeof LibraryRoute
   LoginRoute: typeof LoginRoute
@@ -277,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LanguageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/finder': {
       id: '/finder'
       path: '/finder'
@@ -321,6 +341,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmergencyRoute: EmergencyRoute,
   FamilyRoute: FamilyRoute,
   FinderRoute: FinderRoute,
+  HomeRoute: HomeRoute,
   LanguageRoute: LanguageRoute,
   LibraryRoute: LibraryRoute,
   LoginRoute: LoginRoute,

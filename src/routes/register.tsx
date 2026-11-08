@@ -1,6 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/register")({
+  head: () => ({
+    meta: [
+      { title: "Create an account | CareBridge" },
+      { name: "description", content: "Create a CareBridge account for your family's health information and care reminders." },
+      { property: "og:title", content: "Create an account | CareBridge" },
+      { property: "og:description", content: "Create a CareBridge account for your family's health information and care reminders." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: RegisterPage,
 });
 

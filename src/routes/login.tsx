@@ -1,6 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/login")({
+  head: () => ({
+    meta: [
+      { title: "Sign in | CareBridge" },
+      { name: "description", content: "Sign in to continue caring for your family with CareBridge." },
+      { property: "og:title", content: "Sign in | CareBridge" },
+      { property: "og:description", content: "Sign in to continue caring for your family with CareBridge." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: LoginPage,
 });
 

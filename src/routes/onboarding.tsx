@@ -12,6 +12,10 @@ export const Route = createFileRoute("/onboarding")({
     meta: [
       { title: "Welcome to CareBridge" },
       { name: "description", content: "A calm, trusted health companion for every family." },
+      { property: "og:title", content: "Welcome to CareBridge" },
+      { property: "og:description", content: "A calm, trusted health companion for every family." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });
