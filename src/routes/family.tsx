@@ -33,6 +33,14 @@ import {
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 
 export const Route = createFileRoute("/family")({
+  head: () => ({ meta: [
+    { title: "Family Health Wallet | CareBridge" },
+    { name: "description", content: "Organise family health profiles, care reminders and vaccination records." },
+    { property: "og:title", content: "Family Health Wallet | CareBridge" },
+    { property: "og:description", content: "Organise family health profiles, care reminders and vaccination records." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: FamilyWallet,
 });
 

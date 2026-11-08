@@ -33,6 +33,14 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import type { LucideIcon } from "lucide-react";
 
 export const Route = createFileRoute("/profile")({
+  head: () => ({ meta: [
+    { title: "Profile and settings | CareBridge" },
+    { name: "description", content: "Manage your CareBridge account, preferences and family settings." },
+    { property: "og:title", content: "Profile and settings | CareBridge" },
+    { property: "og:description", content: "Manage your CareBridge account, preferences and family settings." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: ProfilePage,
 });
 

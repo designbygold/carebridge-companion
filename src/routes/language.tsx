@@ -3,6 +3,16 @@ import { Check } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/language")({
+  head: () => ({
+    meta: [
+      { title: "Choose your language | CareBridge" },
+      { name: "description", content: "Choose the language you are most comfortable using with CareBridge." },
+      { property: "og:title", content: "Choose your language | CareBridge" },
+      { property: "og:description", content: "Choose the language you are most comfortable using with CareBridge." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: LanguagePage,
 });
 

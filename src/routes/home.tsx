@@ -1,441 +1,278 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MobileShell } from "@/components/MobileShell";
 import {
+  Activity,
+  ArrowRight,
   Baby,
   BookOpen,
+  CalendarDays,
+  Check,
   ChevronRight,
+  Clock3,
   Droplets,
-  HeartHandshake,
+  HeartPulse,
   MapPin,
   Pill,
-  Shield,
+  ShieldAlert,
   Sparkles,
   Stethoscope,
-  Sun,
   Syringe,
   Thermometer,
   Users,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
 
 export const Route = createFileRoute("/home")({
+  head: () => ({
+    meta: [
+      { title: "Home | CareBridge" },
+      { name: "description", content: "Aisha’s family health dashboard with guided health support, reminders, family updates and nearby care." },
+      { property: "og:title", content: "Home | CareBridge" },
+      { property: "og:description", content: "Aisha’s family health dashboard with guided health support, reminders, family updates and nearby care." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: HomePage,
 });
 
-/* ---------- Northern Nigerian textile-inspired backdrop ---------- */
-function TextilePattern() {
-  return (
-    <svg
-      aria-hidden
-      className="absolute inset-0 h-full w-full opacity-[0.09] text-primary pointer-events-none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <pattern id="cb-textile" width="42" height="42" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <path d="M0 21h42M21 0v42" stroke="currentColor" strokeWidth="0.6" fill="none" />
-          <circle cx="21" cy="21" r="2" fill="currentColor" />
-          <circle cx="0" cy="0" r="1" fill="currentColor" />
-          <circle cx="42" cy="42" r="1" fill="currentColor" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#cb-textile)" />
-    </svg>
-  );
-}
+const family = [
+  { name: "Aisha Ibrahim", relation: "You", age: "31", status: "Healthy", tone: "healthy" },
+  { name: "Ibrahim Ibrahim", relation: "Husband", age: "36", status: "Check-up Monday", tone: "reminder" },
+  { name: "Fatima Ibrahim", relation: "Daughter", age: "6", status: "Polio booster tomorrow", tone: "reminder" },
+  { name: "Musa Ibrahim", relation: "Son", age: "10", status: "Healthy", tone: "healthy" },
+] as const;
+
+const communityUpdates = [
+  { title: "Malaria prevention week", detail: "Free treated nets at Bolori PHC this Saturday", icon: ShieldAlert },
+  { title: "Free immunisation campaign", detail: "Polio and measles boosters across Maiduguri PHCs", icon: Syringe },
+  { title: "Maternal health outreach", detail: "Antenatal check-ups at Gwange PHC this Thursday", icon: HeartPulse },
+  { title: "Heat wave advisory", detail: "Hydrate and check on elders during hot weather", icon: Activity },
+  { title: "Safe water awareness", detail: "Keep drinking water treated and safely stored", icon: Droplets },
+] satisfies { title: string; detail: string; icon: LucideIcon }[];
 
 function HomePage() {
   return (
-    <MobileShell>
-      {/* ---------- HERO ---------- */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-soft via-accent-soft/40 to-transparent" />
-        <TextilePattern />
-
-        <div className="relative px-5 pt-8 pb-6 animate-soft-in">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-semibold text-primary flex items-center gap-1.5">
-                <Sun className="h-4 w-4" /> Good morning
-                <span aria-hidden>🌿</span>
-              </p>
-              <h1 className="text-[32px] leading-tight font-extrabold tracking-tight mt-1 text-foreground">
-                Aisha Ibrahim
-              </h1>
-              <p className="text-[15px] text-muted-foreground mt-1.5 max-w-[18rem]">
-                How is your family feeling today?
-              </p>
-            </div>
-          </div>
-
-          {/* Lafiya AI Companion Card */}
-          <Link
-            to="/assessment"
-            className="mt-5 flex items-center gap-3 rounded-3xl bg-card border border-border/70 px-4 py-3.5 shadow-soft hover:shadow-lift transition-shadow tap-target animate-slide-up"
-            aria-label="Open Lafiya Guide"
-          >
-            <div className="relative h-12 w-12 rounded-2xl grid place-items-center bg-gradient-to-br from-primary to-secondary text-primary-foreground shrink-0">
-              <Sparkles className="h-6 w-6" />
-              <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full bg-accent border-2 border-card" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-foreground flex items-center gap-1.5">
-                Lafiya Guide <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary-soft px-1.5 py-0.5 rounded-md">AI</span>
-              </p>
-              <p className="text-xs text-muted-foreground truncate">Ask me about symptoms, safely & privately</p>
-            </div>
-            <ChevronRight className="h-5 w-5 text-muted-foreground" />
+    <MobileShell wide>
+      <div className="mx-auto w-full max-w-6xl px-5 pb-8 sm:px-8">
+        <header className="flex items-center justify-between gap-4 py-6 sm:py-8">
+          <Link to="/home" aria-label="CareBridge home" className="inline-flex items-center gap-3">
+            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-teal text-background">
+              <HeartPulse className="h-5 w-5" strokeWidth={2.2} />
+            </span>
+            <span className="text-lg font-bold text-brand-midnight">CareBridge</span>
           </Link>
-        </div>
-
-        {/* ---------- Primary care actions ---------- */}
-        <div className="relative px-5 pb-8 grid grid-cols-2 gap-3">
-          <CareTile
-            to="/assessment"
-            emoji="👶"
-            title="My child feels sick"
-            desc="Guided symptom check"
-            tone="primary"
-            icon={<Thermometer className="h-4 w-4" />}
-          />
-          <CareTile
-            to="/assessment"
-            emoji="🤒"
-            title="I don't feel well"
-            desc="Private health guidance"
-            tone="secondary"
-            icon={<Stethoscope className="h-4 w-4" />}
-          />
-          <CareTile
-            to="/mother-child"
-            emoji="🤰"
-            title="Pregnancy & baby care"
-            desc="Track your journey"
-            tone="accent"
-            icon={<Baby className="h-4 w-4" />}
-          />
-          <CareTile
-            to="/finder"
-            emoji="🏥"
-            title="Find nearby care"
-            desc="Clinics & pharmacies"
-            tone="neutral"
-            icon={<MapPin className="h-4 w-4" />}
-          />
-        </div>
-      </section>
-
-      {/* ---------- Emergency (soft) ---------- */}
-      <section className="px-5 pb-6">
-        <Link
-          to="/emergency"
-          className="flex items-center gap-3 rounded-3xl px-4 py-3.5 border border-destructive/30 bg-destructive-soft tap-target hover:shadow-soft transition-shadow"
-        >
-          <div className="h-11 w-11 rounded-2xl grid place-items-center bg-card border border-destructive/25 text-destructive shrink-0">
-            <Shield className="h-5 w-5" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-bold text-foreground">Emergency help</p>
-            <p className="text-xs text-muted-foreground">Call, share location or find urgent care</p>
-          </div>
-          <span className="text-xs font-bold text-destructive border border-destructive/50 rounded-full px-3 py-1.5">
-            Get help
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand-champagne bg-background px-3 py-2 text-xs font-medium text-brand-midnight sm:text-sm">
+            <MapPin className="h-4 w-4 text-brand-teal" />
+            Bolori, Maiduguri
           </span>
-        </Link>
-      </section>
+        </header>
 
-      {/* ---------- Quick actions ---------- */}
-      <section className="px-5 pb-6">
-        <SectionTitle title="Quick actions" hint="Everyday care, one tap away" />
-        <div className="grid grid-cols-2 gap-3">
-          <QuickAction to="/assessment" title="Check symptoms safely" desc="Guided next step" icon={<HeartHandshake className="h-5 w-5" />} tone="primary" />
-          <QuickAction to="/medications" title="Medicines" desc="Today's reminders" icon={<Pill className="h-5 w-5" />} tone="secondary" />
-          <QuickAction to="/mother-child" title="Pregnancy & baby care" desc="Milestones & tips" icon={<Baby className="h-5 w-5" />} tone="accent" />
-          <QuickAction to="/finder" title="Find nearby clinics" desc="Trusted care near you" icon={<MapPin className="h-5 w-5" />} tone="neutral" />
-        </div>
-      </section>
+        <section className="mb-7 animate-soft-in">
+          <p className="text-sm font-semibold text-brand-teal">Good morning</p>
+          <h1 className="mt-1 text-3xl font-bold text-brand-midnight sm:text-4xl">Aisha Ibrahim</h1>
+          <p className="mt-2 text-base text-muted-foreground">How is your family feeling today?</p>
+        </section>
 
-      {/* ---------- Medication ---------- */}
-      <section className="px-5 pb-6">
-        <SectionTitle title="Next medication" hint="A gentle reminder from Lafiya" />
-        <div className="card-elevated p-5 rounded-3xl">
-          <div className="flex items-center gap-3">
-            <div className="h-11 w-11 rounded-2xl grid place-items-center bg-secondary-soft text-secondary">
-              <Pill className="h-5 w-5" />
-            </div>
-            <div className="flex-1">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">In 12 minutes</p>
-              <p className="text-lg font-extrabold text-foreground leading-tight">Paracetamol</p>
-            </div>
-            <span className="text-sm font-bold text-secondary bg-secondary-soft px-3 py-1.5 rounded-xl">8:00 AM</span>
-          </div>
-
-          <div className="mt-4 rounded-2xl bg-muted/60 p-4 grid grid-cols-3 gap-3">
-            <MetaCell label="Dose" value="500 mg" />
-            <MetaCell label="For" value="Fatima" />
-            <MetaCell label="With" value="Water • after food" />
-          </div>
-          <p className="mt-3 text-sm text-muted-foreground">1 tablet gently after breakfast. Watch for fever coming back within 4 hours.</p>
-
-          <div className="mt-4 flex gap-2">
-            <button className="flex-1 tap-target rounded-2xl bg-primary text-primary-foreground font-bold text-sm shadow-soft active:scale-[0.98] transition-transform">
-              Mark as taken
-            </button>
-            <button className="tap-target rounded-2xl border border-border px-5 font-bold text-sm text-foreground bg-card active:scale-[0.98] transition-transform">
-              Snooze
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- Family ---------- */}
-      <section className="pb-6">
-        <div className="px-5">
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <h2 className="text-lg font-extrabold tracking-tight">Your family</h2>
-              <p className="text-xs text-muted-foreground">Everyone's health, in one calm place</p>
-            </div>
-            <Link to="/family" className="text-xs font-bold text-primary flex items-center gap-1">
-              See all <ChevronRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-        <div className="flex gap-3 overflow-x-auto px-5 pb-2 snap-x snap-mandatory">
-          <FamilyCard name="Ibrahim" role="Husband" age={36} initials="IB" status="reminder" />
-          <FamilyCard name="Fatima" role="Daughter" age={6} initials="FA" status="reminder" />
-          <FamilyCard name="Musa" role="Son" age={10} initials="MU" status="healthy" />
-          <FamilyCard name="Aisha" role="You" age={31} initials="AI" status="healthy" />
-          <AddFamilyCard />
-        </div>
-      </section>
-
-      {/* ---------- Today's guidance ---------- */}
-      <section className="px-5 pb-6">
-        <SectionTitle title="Today's guidance" hint="Small habits, safer families" />
-        <div className="relative overflow-hidden card-elevated rounded-3xl p-5">
-          <div className="absolute -right-6 -top-6 h-28 w-28 rounded-full bg-secondary-soft" aria-hidden />
-          <div className="absolute -right-2 top-6 h-16 w-16 rounded-full bg-primary-soft" aria-hidden />
-          <div className="relative">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">Tip of the day</span>
-            <div className="flex items-start gap-3 mt-2">
-              <div className="h-11 w-11 rounded-2xl bg-secondary text-secondary-foreground grid place-items-center shrink-0">
-                <Droplets className="h-5 w-5" />
-              </div>
-              <div className="flex-1">
-                <p className="text-lg font-extrabold text-foreground leading-snug">Clean water saves lives 💧</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Boil drinking water for at least 3 minutes during the rainy season to prevent cholera in your household.
+        <section className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(290px,0.85fr)] lg:items-start">
+          <div className="space-y-7">
+            <Link
+              to="/assessment"
+              aria-label="Open Lafiya Guide for a guided health assessment"
+              className="group relative block overflow-hidden rounded-[20px] bg-brand-midnight p-6 text-background transition-transform active:scale-[0.99] sm:p-8"
+            >
+              <div className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full border border-background/10" aria-hidden="true" />
+              <div className="pointer-events-none absolute -right-2 -top-6 h-40 w-40 rounded-full border border-background/10" aria-hidden="true" />
+              <div className="relative max-w-xl">
+                <div className="flex items-center gap-2 text-sm font-semibold text-brand-champagne">
+                  <Sparkles className="h-4 w-4" /> Lafiya Guide
+                </div>
+                <h2 className="mt-5 max-w-lg text-2xl font-semibold leading-tight sm:text-3xl">
+                  A clearer next step starts with a conversation.
+                </h2>
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-background/75 sm:text-base">
+                  Answer a few guided questions to understand what to do next. This is health guidance, not a diagnosis.
                 </p>
-                <Link to="/library" className="inline-flex items-center gap-1 mt-3 text-sm font-bold text-primary">
-                  Read more <ChevronRight className="h-4 w-4" />
-                </Link>
+                <span className="mt-6 inline-flex min-h-12 items-center gap-3 rounded-xl bg-brand-teal px-5 text-sm font-semibold text-background transition-colors group-hover:bg-brand-teal/90">
+                  Start a health check <ArrowRight className="h-4 w-4" />
+                </span>
               </div>
-            </div>
+            </Link>
+
+            <section aria-labelledby="care-actions-heading">
+              <SectionHeading id="care-actions-heading" title="How can we help?" detail="Choose the kind of support you need." />
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <ActionLink to="/assessment" icon={Baby} title="My child feels sick" detail="Guided symptom check" />
+                <ActionLink to="/assessment" icon={Thermometer} title="I don’t feel well" detail="Private health guidance" />
+                <ActionLink to="/mother-child" icon={HeartPulse} title="Pregnancy & baby care" detail="Care for every stage" />
+                <ActionLink to="/finder" icon={MapPin} title="Find nearby care" detail="Clinics and pharmacies" />
+              </div>
+            </section>
+
+            <section aria-labelledby="family-heading">
+              <SectionHeading id="family-heading" title="Your family" detail="A quick look at the people you care for." action={{ to: "/family", label: "Family wallet" }} />
+              <div className="mt-3 divide-y divide-border border-y border-border">
+                {family.map((person) => <FamilyRow key={person.name} {...person} />)}
+              </div>
+            </section>
+
+            <section aria-labelledby="guidance-heading">
+              <SectionHeading id="guidance-heading" title="Today’s guidance" detail="A small habit for a healthier home." />
+              <div className="mt-4 flex items-start gap-4 rounded-[20px] border border-brand-champagne bg-brand-ivory p-5 sm:p-6">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-background text-brand-teal">
+                  <Droplets className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="font-semibold text-brand-midnight">Clean water saves lives</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    Treat drinking water and keep it in a clean, covered container to help protect your household.
+                  </p>
+                  <Link to="/library" className="mt-3 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-brand-teal">
+                    Read more <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </section>
+
+            <section aria-labelledby="community-heading">
+              <SectionHeading id="community-heading" title="Community updates" detail="Local notices for Maiduguri." action={{ to: "/library", label: "Health library" }} />
+              <div className="mt-3 grid gap-x-6 sm:grid-cols-2">
+                {communityUpdates.map(({ title, detail, icon: Icon }) => (
+                  <article key={title} className="flex gap-3 border-b border-border py-4">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-ivory text-brand-teal">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3 className="text-sm font-semibold text-brand-midnight">{title}</h3>
+                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{detail}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
           </div>
-        </div>
-      </section>
 
-      {/* ---------- Community updates ---------- */}
-      <section className="pb-8">
-        <div className="px-5">
-          <SectionTitle title="Community updates" hint="What's happening around Maiduguri" />
-        </div>
-        <div className="flex gap-3 overflow-x-auto px-5 pb-2 snap-x">
-          <AlertCard
-            title="Malaria prevention week"
-            body="Free treated nets at Bolori PHC this Saturday"
-            icon={<Shield className="h-5 w-5" />}
-            tone="primary"
-          />
-          <AlertCard
-            title="Free immunisation campaign"
-            body="Polio & measles boosters — Aug 10–14 across Maiduguri PHCs"
-            icon={<Syringe className="h-5 w-5" />}
-            tone="accent"
-          />
-          <AlertCard
-            title="Maternal health outreach"
-            body="Free antenatal check-ups at Gwange PHC this Thursday"
-            icon={<HeartHandshake className="h-5 w-5" />}
-            tone="secondary"
-          />
-          <AlertCard
-            title="Heat wave advisory"
-            body="42°C expected today. Hydrate and check on elders."
-            icon={<Sun className="h-5 w-5" />}
-            tone="warm"
-          />
-          <AlertCard
-            title="Safe water awareness"
-            body="Boil drinking water 3 mins — rainy season begins"
-            icon={<Droplets className="h-5 w-5" />}
-            tone="secondary"
-          />
-        </div>
-      </section>
+          <aside className="space-y-6 lg:sticky lg:top-6">
+            <section aria-labelledby="medication-heading" className="rounded-[20px] border border-border bg-background p-5 sm:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase text-muted-foreground">Next medication</p>
+                  <h2 id="medication-heading" className="mt-1 text-lg font-semibold text-brand-midnight">Paracetamol</h2>
+                </div>
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-ivory text-brand-teal"><Pill className="h-5 w-5" /></span>
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground">500 mg · Fatima</p>
+              <div className="mt-4 flex items-center gap-2 border-y border-border py-3 text-sm text-brand-midnight">
+                <Clock3 className="h-4 w-4 text-brand-teal" /> 8:00 AM
+              </div>
+              <p className="mt-3 text-xs leading-relaxed text-muted-foreground">Water · after food</p>
+              <Link to="/medications" className="mt-4 flex min-h-12 items-center justify-center gap-2 rounded-xl bg-brand-teal px-4 text-sm font-semibold text-background transition-colors hover:bg-brand-teal/90">
+                Open medication reminders <ArrowRight className="h-4 w-4" />
+              </Link>
+            </section>
 
-      {/* ---------- Trust footer ---------- */}
-      <div className="mx-5 mb-4 rounded-3xl bg-muted/50 border border-border px-4 py-3.5 text-xs text-muted-foreground flex items-start gap-2">
-        <BookOpen className="h-4 w-4 shrink-0 mt-0.5 text-primary" />
-        <span>
-          CareBridge offers gentle guidance — not a diagnosis. For serious concerns, always visit a qualified health worker.
-        </span>
+            <Link to="/family" className="group flex items-center gap-3 border-y border-border py-4">
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-ivory text-brand-teal"><Users className="h-5 w-5" /></span>
+              <span className="flex-1">
+                <span className="block text-sm font-semibold text-brand-midnight">Family Health Wallet</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">Records, reminders and vaccinations</span>
+              </span>
+              <ChevronRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            </Link>
+
+            <Link to="/emergency" className="flex items-center gap-3 rounded-[20px] border border-destructive/40 bg-destructive-soft p-4 transition-colors hover:bg-destructive-soft/80">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-destructive/30 bg-background text-destructive"><ShieldAlert className="h-5 w-5" /></span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-semibold text-brand-midnight">Emergency support</span>
+                <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">Call, share location or find urgent care.</span>
+              </span>
+              <span className="inline-flex min-h-10 items-center rounded-lg border border-destructive px-3 text-xs font-semibold text-destructive">Get help</span>
+            </Link>
+
+            <section aria-labelledby="more-care-heading">
+              <SectionHeading id="more-care-heading" title="More care" />
+              <div className="mt-2 divide-y divide-border border-y border-border">
+                <FeatureRow to="/medications" icon={CalendarDays} label="Smart reminders" detail="Medication timeline" />
+                <FeatureRow to="/finder" icon={Stethoscope} label="Healthcare finder" detail="Care around Maiduguri" />
+                <FeatureRow to="/library" icon={BookOpen} label="Health library" detail="Guidance in plain language" />
+                <FeatureRow to="/assessment" icon={Activity} label="Recent assessment" detail="Child fever · Visit nearby clinic" />
+              </div>
+            </section>
+          </aside>
+        </section>
+
+        <footer className="mt-8 flex items-start gap-2 border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-teal" />
+          CareBridge offers guidance, not a diagnosis. For serious concerns, speak with a qualified health worker.
+        </footer>
       </div>
     </MobileShell>
   );
 }
 
-/* ---------- Small building blocks ---------- */
-
-function SectionTitle({ title, hint }: { title: string; hint?: string }) {
-  return (
-    <div className="mb-3">
-      <h2 className="text-lg font-extrabold tracking-tight text-foreground">{title}</h2>
-      {hint && <p className="text-xs text-muted-foreground mt-0.5">{hint}</p>}
-    </div>
-  );
-}
-
-function CareTile({
-  to, emoji, title, desc, tone, icon,
+function SectionHeading({
+  id,
+  title,
+  detail,
+  action,
 }: {
-  to: string; emoji: string; title: string; desc: string;
-  tone: "primary" | "secondary" | "accent" | "neutral";
-  icon: ReactNode;
+  id: string;
+  title: string;
+  detail?: string;
+  action?: { to: "/family" | "/library"; label: string };
 }) {
-  const tones: Record<string, string> = {
-    primary: "from-primary-soft to-card border-primary/15",
-    secondary: "from-secondary-soft to-card border-secondary/15",
-    accent: "from-accent-soft to-card border-accent/25",
-    neutral: "from-muted to-card border-border",
-  };
-  const chip: Record<string, string> = {
-    primary: "bg-primary text-primary-foreground",
-    secondary: "bg-secondary text-secondary-foreground",
-    accent: "bg-accent text-accent-foreground",
-    neutral: "bg-foreground text-background",
-  };
   return (
-    <Link
-      to={to}
-      className={`relative overflow-hidden rounded-3xl border bg-gradient-to-br p-4 shadow-soft hover:shadow-lift active:scale-[0.98] transition-all ${tones[tone]}`}
-    >
-      <div className="flex items-center justify-between">
-        <div className="text-3xl leading-none" aria-hidden>{emoji}</div>
-        <div className={`h-7 w-7 rounded-xl grid place-items-center ${chip[tone]}`}>{icon}</div>
-      </div>
-      <p className="mt-6 font-extrabold text-[15px] leading-tight text-foreground">{title}</p>
-      <p className="text-xs text-muted-foreground mt-1">{desc}</p>
-      <ChevronRight className="absolute right-3 bottom-3 h-4 w-4 text-muted-foreground" />
-    </Link>
-  );
-}
-
-function QuickAction({
-  to, title, desc, icon, tone,
-}: {
-  to: string; title: string; desc: string; icon: ReactNode;
-  tone: "primary" | "secondary" | "accent" | "neutral";
-}) {
-  const tones = {
-    primary: "bg-primary-soft text-primary",
-    secondary: "bg-secondary-soft text-secondary",
-    accent: "bg-accent-soft text-accent-foreground",
-    neutral: "bg-muted text-foreground",
-  } as const;
-  return (
-    <Link
-      to={to}
-      className="card-elevated rounded-3xl p-4 flex flex-col gap-3 active:scale-[0.98] transition-transform"
-    >
-      <div className={`h-11 w-11 rounded-2xl grid place-items-center ${tones[tone]}`}>{icon}</div>
+    <div className="flex items-end justify-between gap-4">
       <div>
-        <p className="font-extrabold text-foreground leading-snug">{title}</p>
-        <p className="text-xs text-muted-foreground mt-1">{desc}</p>
+        <h2 id={id} className="text-lg font-semibold text-brand-midnight">{title}</h2>
+        {detail && <p className="mt-1 text-sm text-muted-foreground">{detail}</p>}
       </div>
-      <ChevronRight className="h-4 w-4 text-muted-foreground -mt-1" />
-    </Link>
-  );
-}
-
-function MetaCell({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
-      <p className="text-sm font-bold text-foreground mt-0.5">{value}</p>
+      {action && <Link to={action.to} className="inline-flex min-h-11 shrink-0 items-center gap-1 text-xs font-semibold text-brand-teal">{action.label}<ChevronRight className="h-4 w-4" /></Link>}
     </div>
   );
 }
 
-function FamilyCard({
-  name, role, age, initials, status,
-}: {
-  name: string; role: string; age: number; initials: string;
-  status: "healthy" | "reminder" | "attention";
-}) {
-  const dot = {
-    healthy: { bg: "bg-primary", label: "Healthy" },
-    reminder: { bg: "bg-accent", label: "Reminder due" },
-    attention: { bg: "bg-destructive", label: "Needs attention" },
-  }[status];
+function ActionLink({ to, icon: Icon, title, detail }: { to: "/assessment" | "/mother-child" | "/finder"; icon: LucideIcon; title: string; detail: string }) {
   return (
-    <Link
-      to="/family"
-      className="snap-start shrink-0 w-40 card-elevated rounded-3xl p-4 flex flex-col items-center text-center active:scale-[0.98] transition-transform"
-    >
-      <div className="relative">
-        <div className="h-16 w-16 rounded-2xl grid place-items-center font-extrabold text-xl bg-gradient-to-br from-primary/90 to-secondary/90 text-primary-foreground">
-          {initials}
-        </div>
-        <span className={`absolute -bottom-1 -right-1 h-4 w-4 rounded-full ${dot.bg} border-2 border-card`} aria-label={dot.label} />
-      </div>
-      <p className="mt-3 font-bold text-sm text-foreground truncate w-full">{name}</p>
-      <p className="text-[11px] text-muted-foreground">{role} • {age}</p>
-      <span className="mt-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-        {dot.label}
+    <Link to={to} className="group flex min-h-24 items-center gap-4 rounded-[18px] border border-border bg-background p-4 transition-colors hover:border-brand-teal/40 hover:bg-brand-ivory/60">
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-ivory text-brand-teal"><Icon className="h-5 w-5" /></span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-semibold leading-snug text-brand-midnight">{title}</span>
+        <span className="mt-1 block text-xs text-muted-foreground">{detail}</span>
       </span>
+      <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
     </Link>
   );
 }
 
-function AddFamilyCard() {
+function FamilyRow({ name, relation, age, status, tone }: (typeof family)[number]) {
+  const isReminder = tone === "reminder";
   return (
-    <Link
-      to="/family"
-      className="snap-start shrink-0 w-40 rounded-3xl border-2 border-dashed border-border p-4 flex flex-col items-center justify-center text-center hover:bg-muted/40 transition-colors"
-    >
-      <div className="h-16 w-16 rounded-2xl grid place-items-center bg-muted text-muted-foreground text-2xl font-bold">+</div>
-      <p className="mt-3 font-bold text-sm text-foreground">Add member</p>
-      <p className="text-[11px] text-muted-foreground">Include everyone</p>
+    <Link to="/family" className="group flex min-h-[68px] items-center gap-3 py-3">
+      <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full text-xs font-semibold ${isReminder ? "bg-brand-champagne text-brand-midnight" : "bg-brand-ivory text-brand-teal"}`} aria-hidden="true">
+        {name.split(" ").slice(0, 2).map((part) => part[0]).join("")}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm font-semibold text-brand-midnight">{name}</span>
+        <span className="mt-0.5 block text-xs text-muted-foreground">{relation} · {age}</span>
+      </span>
+      <span className={`hidden items-center gap-1.5 text-xs sm:inline-flex ${isReminder ? "text-warning-foreground" : "text-success"}`}>
+        <span className={`h-2 w-2 rounded-full ${isReminder ? "bg-warning" : "bg-success"}`} />{status}
+      </span>
+      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
     </Link>
   );
 }
 
-function AlertCard({
-  title, body, icon, tone,
-}: {
-  title: string; body: string; icon: ReactNode;
-  tone: "primary" | "secondary" | "accent" | "warm";
-}) {
-  const tones = {
-    primary: "from-primary-soft to-card text-primary",
-    secondary: "from-secondary-soft to-card text-secondary",
-    accent: "from-accent-soft to-card text-accent-foreground",
-    warm: "from-accent-soft to-card text-accent-foreground",
-  } as const;
+function FeatureRow({ to, icon: Icon, label, detail }: { to: "/medications" | "/finder" | "/library" | "/assessment"; icon: LucideIcon; label: string; detail: string }) {
   return (
-    <div className={`snap-start shrink-0 w-64 rounded-3xl p-4 border border-border bg-gradient-to-br shadow-soft ${tones[tone]}`}>
-      <div className="flex items-center gap-2">
-        <div className="h-10 w-10 rounded-2xl grid place-items-center bg-card border border-border">
-          {icon}
-        </div>
-        <Users className="h-4 w-4 opacity-40 ml-auto" />
-      </div>
-      <p className="mt-3 font-extrabold text-foreground leading-snug">{title}</p>
-      <p className="text-xs text-muted-foreground mt-1">{body}</p>
-      <button className="mt-3 text-xs font-bold text-primary inline-flex items-center gap-1">
-        Learn more <ChevronRight className="h-3.5 w-3.5" />
-      </button>
-    </div>
+    <Link to={to} className="group flex min-h-16 items-center gap-3 py-3">
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-ivory text-brand-teal"><Icon className="h-4 w-4" /></span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-medium text-brand-midnight">{label}</span>
+        <span className="mt-0.5 block truncate text-xs text-muted-foreground">{detail}</span>
+      </span>
+      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+    </Link>
   );
 }

@@ -4,6 +4,14 @@ import { Check, Clock, Coffee, Moon, MoreHorizontal, Pill, Plus, Sun, Sunset } f
 import { useState } from "react";
 
 export const Route = createFileRoute("/medications")({
+  head: () => ({ meta: [
+    { title: "Medication reminders | CareBridge" },
+    { name: "description", content: "See and manage your family's daily medication reminders." },
+    { property: "og:title", content: "Medication reminders | CareBridge" },
+    { property: "og:description", content: "See and manage your family's daily medication reminders." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: MedsPage,
 });
 

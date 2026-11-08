@@ -30,6 +30,14 @@ import {
 import { useMemo, useState } from "react";
 
 export const Route = createFileRoute("/finder")({
+  head: () => ({ meta: [
+    { title: "Find nearby care | CareBridge" },
+    { name: "description", content: "Explore clinics, hospitals, pharmacies and community health services around Maiduguri." },
+    { property: "og:title", content: "Find nearby care | CareBridge" },
+    { property: "og:description", content: "Explore clinics, hospitals, pharmacies and community health services around Maiduguri." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: FinderPage,
 });
 
