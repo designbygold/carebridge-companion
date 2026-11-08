@@ -3,6 +3,14 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { AlertTriangle, MapPin, Navigation, Phone, Share2, ShieldAlert } from "lucide-react";
 
 export const Route = createFileRoute("/emergency")({
+  head: () => ({ meta: [
+    { title: "Emergency help | CareBridge" },
+    { name: "description", content: "Emergency contacts, nearby care and first-aid guidance for your family." },
+    { property: "og:title", content: "Emergency help | CareBridge" },
+    { property: "og:description", content: "Emergency contacts, nearby care and first-aid guidance for your family." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: EmergencyPage,
 });
 

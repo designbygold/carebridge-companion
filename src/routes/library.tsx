@@ -4,6 +4,14 @@ import { Bookmark, ChevronRight, Clock, Search } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/library")({
+  head: () => ({ meta: [
+    { title: "Health Library | CareBridge" },
+    { name: "description", content: "Explore practical health articles for families and caregivers." },
+    { property: "og:title", content: "Health Library | CareBridge" },
+    { property: "og:description", content: "Explore practical health articles for families and caregivers." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: LibraryPage,
 });
 

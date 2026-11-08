@@ -43,6 +43,14 @@ import {
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 export const Route = createFileRoute("/assessment")({
+  head: () => ({ meta: [
+    { title: "Lafiya Guide | CareBridge" },
+    { name: "description", content: "A step-by-step health guidance assessment to help you decide on a safe next step." },
+    { property: "og:title", content: "Lafiya Guide | CareBridge" },
+    { property: "og:description", content: "A step-by-step health guidance assessment to help you decide on a safe next step." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: AssessmentPage,
 });
 

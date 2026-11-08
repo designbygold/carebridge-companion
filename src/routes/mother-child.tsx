@@ -3,6 +3,14 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { Apple, Baby, Calendar, Heart, ShieldAlert, Syringe } from "lucide-react";
 
 export const Route = createFileRoute("/mother-child")({
+  head: () => ({ meta: [
+    { title: "Pregnancy and baby care | CareBridge" },
+    { name: "description", content: "Pregnancy, baby growth, clinic visits and vaccination guidance for your family." },
+    { property: "og:title", content: "Pregnancy and baby care | CareBridge" },
+    { property: "og:description", content: "Pregnancy, baby growth, clinic visits and vaccination guidance for your family." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
   component: MotherChildPage,
 });
 
