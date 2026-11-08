@@ -42,6 +42,12 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  --color-brand-midnight: oklch(0.2826 0.0316 223.44);
+  --color-brand-teal: oklch(0.4428 0.0476 205.50);
+  --color-brand-gold: oklch(0.6630 0.0875 71.16);
+  --color-brand-champagne: oklch(0.9065 0.0276 83.54);
+  --color-brand-ivory: oklch(0.9708 0.0086 84.57);
+
   --font-sans: "Manrope", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Manrope", "Inter", sans-serif;
 
