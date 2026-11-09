@@ -82,8 +82,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "CareBridge — Trusted health guidance for every family" },
       { name: "twitter:description", content: "CareBridge is an AI community health companion helping families in Northern Nigeria make informed healthcare decisions with guided assessments, medication reminders, and nearby clinic discovery." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8457cec8-d64d-4b2a-9e41-a0afc58a735b/id-preview-cef3c930--2947d69c-9f8e-4ca1-816e-e60436a1c3f5.lovable.app-1783757494961.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8457cec8-d64d-4b2a-9e41-a0afc58a735b/id-preview-cef3c930--2947d69c-9f8e-4ca1-816e-e60436a1c3f5.lovable.app-1783757494961.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
