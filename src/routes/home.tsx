@@ -53,7 +53,7 @@ const communityUpdates = [
 
 function HomePage() {
   return (
-    <MobileShell wide>
+    <MobileShell wide className="bg-brand-ivory">
       <div className="mx-auto w-full max-w-6xl px-5 pb-8 sm:px-8">
         <header className="flex items-center justify-between gap-4 py-6 sm:py-8">
           <Link to="/home" aria-label="CareBridge home" className="inline-flex items-center gap-3">
