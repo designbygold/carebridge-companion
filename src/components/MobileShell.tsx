@@ -14,31 +14,32 @@ interface MobileShellProps {
   children: ReactNode;
   hideNav?: boolean;
   className?: string;
+  wide?: boolean;
 }
 
-export function MobileShell({ children, hideNav, className }: MobileShellProps) {
+export function MobileShell({ children, hideNav, className, wide }: MobileShellProps) {
   const { pathname } = useLocation();
   return (
     <div className="min-h-dvh bg-background">
-      <div className="mx-auto max-w-[480px] min-h-dvh bg-background flex flex-col relative">
+      <div className={`mx-auto ${wide ? "w-full max-w-7xl" : "max-w-[480px]"} min-h-dvh bg-background flex flex-col relative`}>
         <main
           key={pathname}
           className={`flex-1 flex flex-col animate-page-enter ${hideNav ? "" : "pb-24"} ${className ?? ""}`}
         >
           {children}
         </main>
-        {!hideNav && <BottomNav />}
+        {!hideNav && <BottomNav wide={wide} />}
       </div>
     </div>
   );
 }
 
-function BottomNav() {
+function BottomNav({ wide }: { wide?: boolean }) {
   const { pathname } = useLocation();
   return (
     <nav
       aria-label="Primary"
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] safe-bottom pt-2 px-3 bg-card/90 backdrop-blur-xl border-t border-border/70 z-40 shadow-[0_-8px_24px_-12px_rgba(15,23,42,0.08)]"
+      className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full ${wide ? "max-w-5xl" : "max-w-[480px]"} safe-bottom pt-2 px-3 bg-card/90 backdrop-blur-xl border-t border-border/70 z-40 shadow-[0_-8px_24px_-12px_rgba(15,23,42,0.08)]`}
     >
       <ul className="grid grid-cols-5 gap-1">
         {navItems.map(({ to, label, icon: Icon }) => {

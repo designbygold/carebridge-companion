@@ -7,7 +7,8 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { lazy, useEffect, type ReactNode } from "react";
+import type { ErrorComponentProps } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -34,12 +35,13 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+function ErrorBoundaryView({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
+  const normalizedError = error instanceof Error ? error : new Error(String(error));
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+    console.error(normalizedError);
+    reportLovableError(normalizedError, { boundary: "tanstack_root_error_component" });
+  }, [normalizedError]);
 
   return (
     <div className="flex min-h-dvh items-center justify-center bg-background px-6">
@@ -67,6 +69,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const ErrorComponent = lazy(() => Promise.resolve({ default: ErrorBoundaryView }));
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -82,8 +86,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "CareBridge — Trusted health guidance for every family" },
       { name: "twitter:description", content: "CareBridge is an AI community health companion helping families in Northern Nigeria make informed healthcare decisions with guided assessments, medication reminders, and nearby clinic discovery." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8457cec8-d64d-4b2a-9e41-a0afc58a735b/id-preview-cef3c930--2947d69c-9f8e-4ca1-816e-e60436a1c3f5.lovable.app-1783757494961.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8457cec8-d64d-4b2a-9e41-a0afc58a735b/id-preview-cef3c930--2947d69c-9f8e-4ca1-816e-e60436a1c3f5.lovable.app-1783757494961.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

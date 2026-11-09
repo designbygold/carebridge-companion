@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+Use an opt-in wide mode in the shared mobile shell when a page needs desktop width; existing screens remain mobile-constrained by default.
