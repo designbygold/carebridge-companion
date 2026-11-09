@@ -81,8 +81,6 @@ function HomePage() {
               aria-label="Open Lafiya Guide for a guided health assessment"
               className="group relative block overflow-hidden rounded-[20px] bg-brand-midnight p-6 text-background transition-transform active:scale-[0.99] sm:p-8"
             >
-              <div className="pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full border border-background/10" aria-hidden="true" />
-              <div className="pointer-events-none absolute -right-2 -top-6 h-40 w-40 rounded-full border border-background/10" aria-hidden="true" />
               <div className="relative max-w-xl">
                 <div className="flex items-center gap-2 text-sm font-semibold text-brand-champagne">
                   <Sparkles className="h-4 w-4" /> Lafiya Guide
