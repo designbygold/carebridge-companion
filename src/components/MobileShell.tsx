@@ -14,13 +14,14 @@ interface MobileShellProps {
   children: ReactNode;
   hideNav?: boolean;
   className?: string;
+  wide?: boolean;
 }
 
-export function MobileShell({ children, hideNav, className }: MobileShellProps) {
+export function MobileShell({ children, hideNav, className, wide }: MobileShellProps) {
   const { pathname } = useLocation();
   return (
     <div className="min-h-dvh bg-background">
-      <div className="mx-auto max-w-[480px] min-h-dvh bg-background flex flex-col relative">
+      <div className={`mx-auto ${wide ? "w-full max-w-7xl" : "max-w-[480px]"} min-h-dvh bg-background flex flex-col relative`}>
         <main
           key={pathname}
           className={`flex-1 flex flex-col animate-page-enter ${hideNav ? "" : "pb-24"} ${className ?? ""}`}
