@@ -53,7 +53,7 @@ const communityUpdates = [
 
 function HomePage() {
   return (
-    <MobileShell wide className="overflow-x-clip bg-brand-ivory">
+    <MobileShell wide bottomNavClearance className="overflow-x-clip bg-brand-ivory">
       <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
         <header className="flex items-center justify-between gap-4 py-5 sm:py-7">
           <Link to="/home" aria-label="CareBridge home" className="inline-flex items-center gap-3">
@@ -70,7 +70,7 @@ function HomePage() {
         </header>
 
         <section className="mb-5 animate-soft-in sm:mb-7">
-          <p className="text-sm font-bold text-brand-deep-green">Good morning,</p>
+          <p className="inline-flex items-center gap-2 text-sm font-bold text-brand-deep-green"><span className="h-2 w-2 rounded-full bg-brand-teal" />Good morning,</p>
           <h1 className="mt-1 text-3xl font-bold text-brand-midnight sm:text-4xl">Aisha Ibrahim</h1>
           <p className="mt-2 text-base text-muted-foreground">How is your family feeling today?</p>
         </section>
@@ -90,7 +90,7 @@ function HomePage() {
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-background/85 sm:text-base">
               Answer a few guided questions to understand what to do next. This is health guidance, not a diagnosis.
             </p>
-            <span className="mt-5 inline-flex min-h-12 items-center gap-3 rounded-xl bg-background px-5 text-sm font-bold text-brand-deep-green transition-colors group-hover:bg-brand-champagne sm:mt-6">
+      <span className="mt-5 inline-flex min-h-12 items-center gap-3 rounded-xl bg-background px-5 text-sm font-bold text-brand-deep-green transition-colors group-hover:bg-brand-champagne sm:mt-6">
               Start a health check <ArrowRight className="h-4 w-4" />
             </span>
           </div>
@@ -123,7 +123,7 @@ function HomePage() {
               </div>
             </section>
 
-            <section aria-labelledby="family-heading" className="rounded-[22px] border border-border bg-background p-4 sm:p-6">
+            <section aria-labelledby="family-heading" className="border-y border-border bg-background/70 px-3 py-5 sm:px-5">
               <SectionHeading id="family-heading" title="Your family" detail="A quick look at the people you care for." action={{ to: "/family", label: "Family wallet" }} />
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 {family.map((person) => <FamilyRow key={person.name} {...person} />)}
@@ -134,8 +134,8 @@ function HomePage() {
               <SectionHeading id="community-heading" title="Community updates" detail="Local notices for Maiduguri." action={{ to: "/library", label: "Health library" }} />
               <div className="mt-3 grid gap-x-6 sm:grid-cols-2">
                 {communityUpdates.map(({ title, detail, icon: Icon }, index) => (
-                  <article key={title} className="flex gap-3 border-b border-border py-4">
-                    <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${index % 2 === 0 ? "bg-primary-soft text-brand-deep-green" : "bg-accent-soft text-accent-foreground"}`}>
+                <article key={title} className="flex gap-3 border-b border-border py-4">
+                    <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${index % 2 === 0 ? "bg-primary-soft text-brand-deep-green" : "bg-brand-champagne text-accent-foreground"}`}>
                       <Icon className="h-5 w-5" strokeWidth={1.9} />
                     </span>
                     <div>
@@ -149,8 +149,8 @@ function HomePage() {
           </div>
 
           <aside className="space-y-5 lg:sticky lg:top-6">
-            <section aria-labelledby="medication-heading" className="overflow-hidden rounded-[22px] border border-brand-teal/20 bg-background">
-              <div className="flex items-center justify-between gap-3 border-t-4 border-brand-teal p-5 sm:p-6">
+            <section aria-labelledby="medication-heading" className="overflow-hidden border border-brand-teal/25 bg-background">
+              <div className="flex items-center justify-between gap-3 border-t-4 border-brand-teal bg-primary-soft/60 p-5 sm:p-6">
                 <div>
                   <p className="text-xs font-bold uppercase text-brand-deep-green">Next medication</p>
                   <h2 id="medication-heading" className="mt-1 text-xl font-bold text-brand-midnight">Paracetamol</h2>
@@ -169,9 +169,9 @@ function HomePage() {
               </div>
             </section>
 
-            <section aria-labelledby="guidance-heading" className="border-l-4 border-brand-gold bg-accent-soft p-5 sm:p-6">
+            <section aria-labelledby="guidance-heading" className="border-l-4 border-brand-gold bg-background px-5 py-5 sm:px-6">
               <div className="flex items-start gap-4">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-background text-brand-deep-green">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary-soft text-brand-deep-green">
                   <Droplets className="h-5 w-5" />
                 </span>
                 <div>
@@ -250,20 +250,22 @@ function SectionHeading({
 
 function ActionLink({ to, icon: Icon, title, detail, tone, featured = false }: { to: "/assessment" | "/mother-child" | "/finder"; icon: LucideIcon; title: string; detail: string; tone: "primary" | "plain" | "warm" | "cool"; featured?: boolean }) {
   const surface = {
-    primary: "border-transparent bg-primary-soft",
+    primary: "border-transparent bg-brand-teal text-primary-foreground",
     plain: "border-border bg-background",
-    warm: "border-transparent bg-accent-soft",
-    cool: "border-transparent bg-secondary-soft",
+    warm: "border-transparent bg-brand-champagne",
+    cool: "border-brand-teal/20 bg-primary-soft/60",
   }[tone];
-  const iconTone = tone === "warm" ? "text-accent-foreground" : tone === "cool" ? "text-secondary-foreground" : "text-brand-deep-green";
+  const iconTone = tone === "primary" ? "bg-background/20 text-primary-foreground" : tone === "warm" ? "bg-background/70 text-accent-foreground" : "bg-background/80 text-brand-deep-green";
+  const titleTone = tone === "primary" ? "text-primary-foreground" : "text-brand-midnight";
+  const detailTone = tone === "primary" ? "text-primary-foreground/85" : "text-muted-foreground";
   return (
-    <Link to={to} className={`group flex ${featured ? "min-h-28 sm:col-span-2 sm:min-h-32" : "min-h-24"} items-center gap-4 rounded-[18px] border ${surface} p-4 transition-colors hover:border-brand-teal/50 hover:bg-background sm:p-5`}>
+    <Link to={to} className={`group flex ${featured ? "min-h-28 sm:col-span-2 sm:min-h-32" : "min-h-24"} items-center gap-4 rounded-[18px] border ${surface} p-4 transition-colors hover:border-brand-teal/50 ${tone === "primary" ? "hover:bg-brand-deep-green" : "hover:bg-background"} sm:p-5`}>
       <span className={`grid ${featured ? "h-14 w-14 rounded-2xl" : "h-11 w-11 rounded-xl"} shrink-0 place-items-center bg-background/80 ${iconTone}`}><Icon className={featured ? "h-6 w-6" : "h-5 w-5"} strokeWidth={1.9} /></span>
       <span className="min-w-0 flex-1">
-        <span className={`block font-bold leading-snug text-brand-midnight ${featured ? "text-base sm:text-lg" : "text-sm"}`}>{title}</span>
-        <span className="mt-1 block text-xs text-muted-foreground sm:text-sm">{detail}</span>
+        <span className={`block font-bold leading-snug ${titleTone} ${featured ? "text-base sm:text-lg" : "text-sm"}`}>{title}</span>
+        <span className={`mt-1 block text-xs sm:text-sm ${detailTone}`}>{detail}</span>
       </span>
-      <ChevronRight className="h-5 w-5 shrink-0 text-brand-deep-green transition-transform group-hover:translate-x-0.5" />
+      <ChevronRight className={`h-5 w-5 shrink-0 transition-transform group-hover:translate-x-0.5 ${tone === "primary" ? "text-primary-foreground" : "text-brand-deep-green"}`} />
     </Link>
   );
 }
