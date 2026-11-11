@@ -53,7 +53,7 @@ const communityUpdates = [
 
 function HomePage() {
   return (
-    <MobileShell wide className="overflow-x-clip bg-brand-ivory">
+    <MobileShell wide bottomNavClearance className="overflow-x-clip bg-brand-ivory">
       <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
         <header className="flex items-center justify-between gap-4 py-5 sm:py-7">
           <Link to="/home" aria-label="CareBridge home" className="inline-flex items-center gap-3">
@@ -70,7 +70,7 @@ function HomePage() {
         </header>
 
         <section className="mb-5 animate-soft-in sm:mb-7">
-          <p className="text-sm font-bold text-brand-deep-green">Good morning,</p>
+          <p className="inline-flex items-center gap-2 text-sm font-bold text-brand-deep-green"><span className="h-2 w-2 rounded-full bg-brand-teal" />Good morning,</p>
           <h1 className="mt-1 text-3xl font-bold text-brand-midnight sm:text-4xl">Aisha Ibrahim</h1>
           <p className="mt-2 text-base text-muted-foreground">How is your family feeling today?</p>
         </section>
@@ -123,7 +123,7 @@ function HomePage() {
               </div>
             </section>
 
-            <section aria-labelledby="family-heading" className="rounded-[22px] border border-border bg-background p-4 sm:p-6">
+            <section aria-labelledby="family-heading" className="border-y border-border bg-background/70 px-3 py-5 sm:px-5">
               <SectionHeading id="family-heading" title="Your family" detail="A quick look at the people you care for." action={{ to: "/family", label: "Family wallet" }} />
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 {family.map((person) => <FamilyRow key={person.name} {...person} />)}
@@ -149,8 +149,8 @@ function HomePage() {
           </div>
 
           <aside className="space-y-5 lg:sticky lg:top-6">
-            <section aria-labelledby="medication-heading" className="overflow-hidden rounded-[22px] border border-brand-teal/20 bg-background">
-              <div className="flex items-center justify-between gap-3 border-t-4 border-brand-teal p-5 sm:p-6">
+            <section aria-labelledby="medication-heading" className="overflow-hidden border border-brand-teal/25 bg-background">
+              <div className="flex items-center justify-between gap-3 border-t-4 border-brand-teal bg-primary-soft/60 p-5 sm:p-6">
                 <div>
                   <p className="text-xs font-bold uppercase text-brand-deep-green">Next medication</p>
                   <h2 id="medication-heading" className="mt-1 text-xl font-bold text-brand-midnight">Paracetamol</h2>
@@ -169,9 +169,9 @@ function HomePage() {
               </div>
             </section>
 
-            <section aria-labelledby="guidance-heading" className="border-l-4 border-brand-gold bg-accent-soft p-5 sm:p-6">
+            <section aria-labelledby="guidance-heading" className="border-l-4 border-brand-gold bg-background px-5 py-5 sm:px-6">
               <div className="flex items-start gap-4">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-background text-brand-deep-green">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary-soft text-brand-deep-green">
                   <Droplets className="h-5 w-5" />
                 </span>
                 <div>
