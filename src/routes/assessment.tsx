@@ -70,6 +70,15 @@ type Answers = {
 
 // intro + 7 question steps + summary + result = 10 screens; progress uses questions 1..8
 const TOTAL_QUESTIONS = 7;
+const ASSESSMENT_STAGES = [
+  "Who needs help?",
+  "Age group",
+  "Main concern",
+  "Duration",
+  "Severity",
+  "Danger signs",
+  "Review answers",
+] as const;
 
 function AssessmentPage() {
   const [step, setStep] = useState(0); // 0 intro, 1..7 questions, 8 summary, 9 result
@@ -107,6 +116,7 @@ function AssessmentPage() {
         <header className="px-5 pt-6 pb-3">
           <div className="flex items-center gap-3">
             <button
+              type="button"
               onClick={back}
               className="tap-target grid place-items-center h-11 w-11 -ml-2 rounded-2xl hover:bg-muted"
               aria-label="Back"
@@ -116,9 +126,8 @@ function AssessmentPage() {
             <div className="flex-1">
               <p className="text-xs font-bold uppercase tracking-widest text-primary">Lafiya Guide</p>
               {showProgress && (
-                <p className="text-xs font-semibold text-muted-foreground mt-0.5">
-                  Question {step} of {TOTAL_QUESTIONS}
-                </p>
+                <p className="text-xs font-bold text-foreground mt-0.5">Step {step} of {TOTAL_QUESTIONS}</p>
+                <p className="text-xs text-muted-foreground">{ASSESSMENT_STAGES[step - 1]}</p>
               )}
             </div>
             {offline && (
@@ -128,7 +137,14 @@ function AssessmentPage() {
             )}
           </div>
           {showProgress && (
-            <div className="mt-3 h-1.5 rounded-full bg-muted overflow-hidden">
+            <div
+              className="mt-3 h-2 rounded-full bg-muted overflow-hidden"
+              role="progressbar"
+              aria-label="Assessment progress"
+              aria-valuemin={1}
+              aria-valuemax={TOTAL_QUESTIONS}
+              aria-valuenow={step}
+            >
               <div
                 className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${(step / TOTAL_QUESTIONS) * 100}%` }}
@@ -242,10 +258,12 @@ function OptionCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full tap-target rounded-3xl border-2 px-4 py-4 text-left flex items-center gap-4 transition-all ${
+      type="button"
+      aria-pressed={active}
+      className={`w-full tap-target rounded-2xl border-2 px-4 py-4 text-left flex items-center gap-4 transition-all ${
         active
           ? "border-primary bg-primary-soft"
-          : "border-border bg-card hover:border-primary/40 shadow-soft"
+          : "border-border bg-card hover:border-primary/50"
       }`}
     >
       {icon && (
@@ -282,9 +300,10 @@ function PrimaryButton({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       disabled={disabled}
-      className="tap-target w-full flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3.5 text-base font-bold text-primary-foreground shadow-lift disabled:opacity-40 disabled:shadow-none transition-all active:scale-[0.98]"
+      className="tap-target w-full flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3.5 text-base font-bold text-primary-foreground disabled:opacity-40 transition-colors active:scale-[0.98]"
     >
       {children}
     </button>
@@ -305,81 +324,43 @@ function MedicalDisclaimer() {
 
 /* -------------------- Intro -------------------- */
 
-function IntroIllustration() {
-  return (
-    <div className="relative rounded-[28px] overflow-hidden bg-gradient-to-br from-primary-soft via-secondary-soft to-accent-soft aspect-[5/4] shadow-soft">
-      <svg viewBox="0 0 400 320" className="absolute inset-0 w-full h-full">
-        <defs>
-          <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="oklch(0.95 0.04 155)" />
-            <stop offset="100%" stopColor="oklch(0.97 0.04 85)" />
-          </linearGradient>
-          <pattern id="textile" width="24" height="24" patternUnits="userSpaceOnUse">
-            <path d="M0 12 L12 0 L24 12 L12 24 Z" fill="none" stroke="oklch(0.66 0.14 155 / 0.15)" strokeWidth="1" />
-          </pattern>
-        </defs>
-        <rect width="400" height="320" fill="url(#sky)" />
-        <rect width="400" height="320" fill="url(#textile)" />
-        {/* sun */}
-        <circle cx="330" cy="70" r="34" fill="oklch(0.82 0.14 80 / 0.6)" />
-        {/* horizon hill */}
-        <path d="M0 240 Q 100 200 200 220 T 400 230 L400 320 L0 320 Z" fill="oklch(0.66 0.14 155 / 0.25)" />
-        {/* mother */}
-        <g transform="translate(110 130)">
-          <circle cx="0" cy="0" r="22" fill="oklch(0.55 0.06 40)" />
-          <path d="M-30 24 Q -30 90 0 100 Q 30 90 30 24 Z" fill="oklch(0.66 0.14 155)" />
-          {/* headwrap */}
-          <path d="M-24 -8 Q -20 -30 0 -28 Q 20 -30 24 -8 Z" fill="oklch(0.62 0.2 25)" />
-        </g>
-        {/* child */}
-        <g transform="translate(170 170)">
-          <circle cx="0" cy="0" r="14" fill="oklch(0.6 0.06 40)" />
-          <path d="M-18 16 Q -18 60 0 66 Q 18 60 18 16 Z" fill="oklch(0.82 0.14 80)" />
-        </g>
-        {/* CHW */}
-        <g transform="translate(240 130)">
-          <circle cx="0" cy="0" r="22" fill="oklch(0.58 0.06 40)" />
-          <path d="M-30 24 Q -30 90 0 100 Q 30 90 30 24 Z" fill="oklch(0.7 0.11 235)" />
-          {/* cross */}
-          <rect x="-6" y="40" width="12" height="4" fill="white" />
-          <rect x="-2" y="36" width="4" height="12" fill="white" />
-        </g>
-        {/* baby */}
-        <g transform="translate(290 180)">
-          <circle cx="0" cy="0" r="11" fill="oklch(0.62 0.06 40)" />
-          <path d="M-14 12 Q -14 46 0 50 Q 14 46 14 12 Z" fill="oklch(0.95 0.04 85)" />
-        </g>
-      </svg>
-      <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/10 to-transparent" />
-    </div>
-  );
-}
-
 function IntroStep({ onStart }: { onStart: () => void }) {
   return (
     <>
-      <div className="mb-5">
-        <IntroIllustration />
+      <div className="mb-7 flex items-center gap-3">
+        <span className="grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary">
+          <HeartPulse className="h-6 w-6" aria-hidden="true" />
+        </span>
+        <div>
+          <p className="text-xs font-bold uppercase text-primary">A calmer first step</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">Personal health guidance, one step at a time</p>
+        </div>
       </div>
-      <h1 className="text-[28px] leading-tight font-extrabold tracking-tight text-foreground">
-        Let's understand what's happening.
+      <h1 className="text-[30px] leading-tight font-extrabold text-foreground">
+        Find a clear next step for your health concern.
       </h1>
       <p className="text-[15px] text-muted-foreground mt-2 leading-relaxed">
-        Answer a few simple questions so we can recommend the safest next step for you and your
-        family.
+        Share a few details, review your answers, and receive general guidance for what to do next.
       </p>
 
-      <div className="mt-5 card-elevated p-4 space-y-3">
+      <div className="mt-7 divide-y divide-border border-y border-border">
         <TrustRow>Educational guidance only</TrustRow>
         <TrustRow>Not a medical diagnosis</TrustRow>
         <TrustRow>Your information stays private</TrustRow>
       </div>
 
+      <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-foreground">
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-accent-soft text-accent-foreground">
+          <Check className="h-4 w-4" aria-hidden="true" />
+        </span>
+        7 focused steps, with a chance to review before guidance
+      </p>
+
       <div className="flex-1" />
 
       <div className="space-y-3 mt-6">
         <PrimaryButton onClick={onStart}>
-          <Sparkles className="h-4 w-4" /> Start Assessment
+          <ArrowRight className="h-4 w-4" /> Start assessment
         </PrimaryButton>
         <p className="text-center text-xs text-muted-foreground">Available in English • Hausa</p>
       </div>
@@ -389,7 +370,7 @@ function IntroStep({ onStart }: { onStart: () => void }) {
 
 function TrustRow({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex min-h-14 items-center gap-3 py-2">
       <span className="h-7 w-7 rounded-full bg-primary-soft grid place-items-center shrink-0">
         <Check className="h-4 w-4 text-primary" strokeWidth={3} />
       </span>
@@ -484,6 +465,7 @@ function ConcernStep({ value, onSelect }: { value?: string; onSelect: (v: string
       <div className="relative mb-4">
         <Search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <input
+          aria-label="Search health concerns"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search symptoms"
@@ -497,11 +479,13 @@ function ConcernStep({ value, onSelect }: { value?: string; onSelect: (v: string
           return (
             <button
               key={c.v}
+              type="button"
+              aria-pressed={active}
               onClick={() => onSelect(c.v)}
-              className={`tap-target rounded-3xl border-2 p-4 text-left flex flex-col gap-3 transition-all ${
+              className={`tap-target min-h-28 rounded-2xl border-2 p-4 text-left flex flex-col gap-3 transition-colors ${
                 active
                   ? "border-primary bg-primary-soft"
-                  : "border-border bg-card hover:border-primary/40 shadow-soft"
+                  : "border-border bg-card hover:border-primary/50"
               }`}
             >
               <span className={`h-11 w-11 rounded-2xl grid place-items-center ${c.tint}`}>
@@ -518,7 +502,7 @@ function ConcernStep({ value, onSelect }: { value?: string; onSelect: (v: string
         )}
       </div>
 
-      <button className="mt-5 tap-target inline-flex items-center gap-2 rounded-2xl border border-dashed border-border px-4 py-3 text-sm font-semibold text-muted-foreground self-start">
+      <button type="button" className="mt-5 tap-target inline-flex items-center gap-2 rounded-xl border border-dashed border-border px-4 py-3 text-sm font-semibold text-muted-foreground self-start">
         <Mic className="h-4 w-4" /> Describe with voice (coming soon)
       </button>
     </>
@@ -577,11 +561,13 @@ function SeverityStep({
         {SEVERITIES.map((o) => (
           <button
             key={o.v}
+            type="button"
+            aria-pressed={value === o.v}
             onClick={() => onSelect(o.v)}
-            className={`w-full tap-target rounded-3xl border-2 px-4 py-4 text-left flex items-center gap-4 transition-all ${
+            className={`w-full tap-target rounded-2xl border-2 px-4 py-4 text-left flex items-center gap-4 transition-colors ${
               value === o.v
                 ? "border-primary bg-primary-soft"
-                : "border-border bg-card hover:border-primary/40 shadow-soft"
+                : "border-border bg-card hover:border-primary/50"
             }`}
           >
             <span className={`h-3 w-3 rounded-full ${o.dot} shrink-0`} />
@@ -637,6 +623,9 @@ function DangerStep({
           return (
             <button
               key={d}
+              type="button"
+              role="checkbox"
+              aria-checked={active}
               onClick={() => toggle(d)}
               className={`w-full tap-target rounded-2xl border-2 px-4 py-3 text-left flex items-center gap-3 transition-all ${
                 active
@@ -661,7 +650,7 @@ function DangerStep({
         <div className="mt-5 rounded-2xl bg-destructive-soft border border-destructive/30 p-4 flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
           <p className="text-[13px] font-semibold text-destructive leading-snug">
-            Danger signs selected. We'll prepare urgent guidance for you.
+            A danger sign is selected. It may need urgent attention; review your answers and follow the urgent guidance next.
           </p>
         </div>
       )}
@@ -733,7 +722,8 @@ function ReviewStep({
             </div>
             <button
               onClick={() => onEdit(r.step)}
-              className="text-xs font-bold text-primary rounded-full px-3 py-1.5 bg-primary-soft"
+              aria-label={`Edit ${r.label.toLowerCase()}`}
+              className="tap-target text-xs font-bold text-primary rounded-xl px-3 py-1.5 bg-primary-soft"
             >
               Edit
             </button>
@@ -844,17 +834,22 @@ function classify(a: Answers): Level {
 
 function ResultStep({ answers }: { answers: Answers }) {
   const level = classify(answers);
+  const outcome = level === "red"
+    ? { title: "Urgent medical care", detail: "Your answers indicate that urgent professional care is the safest next step.", icon: <Siren className="h-6 w-6" />, style: "border-destructive bg-destructive-soft text-destructive" }
+    : level === "yellow"
+      ? { title: "Visit a healthcare facility", detail: "A qualified health worker should assess the concern soon.", icon: <Stethoscope className="h-6 w-6" />, style: "border-accent bg-accent-soft text-accent-foreground" }
+      : { title: "Home-care guidance", detail: "No immediate warning signs were reported. Keep monitoring how things change.", icon: <ShieldCheck className="h-6 w-6" />, style: "border-primary bg-primary-soft text-primary" };
   return (
     <div className="animate-soft-in">
-      <ResultIllustration level={level} />
-
-      <div className="mt-5">
-        <p className="text-xs font-bold uppercase tracking-widest text-primary">
-          We've prepared your next best step
-        </p>
-        <h1 className="text-[28px] leading-tight font-extrabold tracking-tight mt-1 text-foreground">
-          Your Next Best Step
-        </h1>
+      <div className={`mt-3 border-l-4 p-4 ${outcome.style}`} role="status" aria-live="polite">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 shrink-0" aria-hidden="true">{outcome.icon}</span>
+          <div>
+            <p className="text-xs font-bold uppercase">Your next best step</p>
+            <h1 className="mt-1 text-2xl font-extrabold leading-tight text-foreground">{outcome.title}</h1>
+            <p className="mt-2 text-sm leading-relaxed text-foreground">{outcome.detail}</p>
+          </div>
+        </div>
       </div>
 
       {level === "green" && <GreenCard />}
@@ -874,56 +869,11 @@ function ResultStep({ answers }: { answers: Answers }) {
   );
 }
 
-/* -------------------- Result illustration -------------------- */
-
-function ResultIllustration({ level }: { level: Level }) {
-  const gradient =
-    level === "red"
-      ? "from-destructive-soft via-accent-soft to-background"
-      : level === "yellow"
-        ? "from-accent-soft via-primary-soft to-background"
-        : "from-primary-soft via-secondary-soft to-background";
-  return (
-    <div className={`relative rounded-[28px] overflow-hidden bg-gradient-to-br ${gradient} aspect-[16/10] shadow-soft`}>
-      <svg viewBox="0 0 400 250" className="absolute inset-0 w-full h-full" aria-hidden>
-        <defs>
-          <pattern id="tx" width="22" height="22" patternUnits="userSpaceOnUse">
-            <path d="M0 11 L11 0 L22 11 L11 22 Z" fill="none" stroke="oklch(0.66 0.14 155 / 0.15)" strokeWidth="1" />
-          </pattern>
-        </defs>
-        <rect width="400" height="250" fill="url(#tx)" />
-        {/* sun / lamp */}
-        <circle cx="320" cy="60" r="30" fill={level === "red" ? "oklch(0.62 0.2 25 / 0.55)" : "oklch(0.82 0.14 80 / 0.65)"} />
-        {/* hill */}
-        <path d="M0 190 Q 100 150 200 170 T 400 180 L400 250 L0 250 Z" fill="oklch(0.66 0.14 155 / 0.28)" />
-        {/* mother with child */}
-        <g transform="translate(120 110)">
-          <circle cx="0" cy="0" r="20" fill="oklch(0.55 0.06 40)" />
-          <path d="M-28 22 Q -28 82 0 92 Q 28 82 28 22 Z" fill="oklch(0.66 0.14 155)" />
-          <path d="M-22 -8 Q -18 -28 0 -26 Q 18 -28 22 -8 Z" fill="oklch(0.62 0.2 25)" />
-        </g>
-        <g transform="translate(170 148)">
-          <circle cx="0" cy="0" r="12" fill="oklch(0.6 0.06 40)" />
-          <path d="M-16 14 Q -16 52 0 56 Q 16 52 16 14 Z" fill="oklch(0.82 0.14 80)" />
-        </g>
-        {/* health worker */}
-        <g transform="translate(250 110)">
-          <circle cx="0" cy="0" r="20" fill="oklch(0.58 0.06 40)" />
-          <path d="M-28 22 Q -28 82 0 92 Q 28 82 28 22 Z" fill="oklch(0.7 0.11 235)" />
-          <rect x="-5" y="36" width="10" height="3.5" fill="white" />
-          <rect x="-1.75" y="32.75" width="3.5" height="10" fill="white" />
-        </g>
-      </svg>
-      <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/10 to-transparent" />
-    </div>
-  );
-}
-
 /* -------------------- Green (home care) -------------------- */
 
 function GreenCard() {
   return (
-    <div className="mt-4 rounded-[28px] p-6 bg-card border-2 border-primary/25 shadow-lift animate-slide-up">
+    <div className="mt-4 rounded-2xl p-5 bg-card border border-primary/40 animate-slide-up">
       <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-primary-soft text-primary rounded-full px-3 py-1">
         <ShieldCheck className="h-3.5 w-3.5" /> Recommendation
       </div>
@@ -988,7 +938,7 @@ const NEARBY_FACILITIES = [
 
 function YellowCard() {
   return (
-    <div className="mt-4 rounded-[28px] p-6 bg-card border-2 border-accent/40 shadow-lift animate-slide-up">
+    <div className="mt-4 rounded-2xl p-5 bg-card border border-accent/60 animate-slide-up">
       <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-accent-soft text-accent-foreground rounded-full px-3 py-1">
         <Stethoscope className="h-3.5 w-3.5" /> Recommendation
       </div>
@@ -1059,21 +1009,21 @@ function FacilityCard({ f }: { f: (typeof NEARBY_FACILITIES)[number] }) {
 
 function RedCard() {
   return (
-    <div className="mt-4 rounded-[28px] p-6 bg-gradient-to-br from-destructive to-[#a5321f] shadow-lift text-destructive-foreground animate-slide-up">
-      <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest bg-white/25 rounded-full px-3 py-1">
+    <div className="mt-4 rounded-2xl border-2 border-destructive bg-destructive p-5 text-destructive-foreground animate-slide-up">
+      <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase bg-foreground/10 rounded-full px-3 py-1">
         <Siren className="h-3.5 w-3.5" /> Urgent
       </div>
       <h2 className="mt-3 text-[22px] font-extrabold leading-tight">
         Seek Immediate Medical Attention
       </h2>
-      <p className="mt-2 text-white/90 text-[14.5px] leading-relaxed">
+      <p className="mt-2 text-destructive-foreground/90 text-[14.5px] leading-relaxed">
         Some of the symptoms you reported may require urgent medical assessment. Please act now — do
         not wait.
       </p>
 
       <a
         href="tel:112"
-        className="mt-5 tap-target w-full rounded-2xl bg-white text-destructive font-extrabold text-lg flex items-center justify-center gap-2 py-4 shadow-lift active:scale-[0.98] transition"
+        className="mt-5 tap-target w-full rounded-2xl bg-card text-destructive font-extrabold text-lg flex items-center justify-center gap-2 py-4 active:scale-[0.98] transition"
       >
         <Phone className="h-5 w-5" /> Emergency Call · 112
       </a>
@@ -1085,12 +1035,12 @@ function RedCard() {
         <EmergencyAction icon={<BookOpen className="h-5 w-5" />} label="Instructions" to="/emergency" />
       </div>
 
-      <div className="mt-4 rounded-2xl bg-white/15 backdrop-blur p-4">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-white/80">
+      <div className="mt-4 rounded-xl bg-foreground/10 p-4">
+        <p className="text-[11px] font-bold uppercase text-destructive-foreground/80">
           Nearest emergency facility
         </p>
-        <p className="mt-1 font-bold text-white">UMTH Emergency Unit</p>
-        <p className="text-xs text-white/85">3.4 km · Open 24 hours</p>
+        <p className="mt-1 font-bold">UMTH Emergency Unit</p>
+        <p className="text-xs text-destructive-foreground/85">3.4 km · Open 24 hours</p>
       </div>
     </div>
   );
@@ -1106,7 +1056,7 @@ function EmergencyAction({
   to?: string;
 }) {
   const cls =
-    "tap-target rounded-2xl bg-white/15 hover:bg-white/25 backdrop-blur px-3 py-3 flex flex-col items-start gap-1.5 text-white font-bold text-[13px] leading-tight text-left transition";
+    "tap-target rounded-xl bg-foreground/10 hover:bg-foreground/20 px-3 py-3 flex flex-col items-start gap-1.5 text-destructive-foreground font-bold text-[13px] leading-tight text-left transition";
   if (to) {
     return (
       <Link to={to} className={cls}>
